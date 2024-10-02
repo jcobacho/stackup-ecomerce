@@ -1,1 +1,1 @@
-# stackup-react-django
+# stackup-ecomerce
