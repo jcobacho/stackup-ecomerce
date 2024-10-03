@@ -10,9 +10,10 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
 
     <ChakraProvider>
-    <Provider store={store}>
+      <Provider store={store}>
+        
 
-      <App />
+        <App />
       </Provider>
 
     </ChakraProvider>
