@@ -1,20 +1,27 @@
-import { Box, Flex } from "@chakra-ui/react"
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react'
+import { useLoaderData, useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
+
+import { CircularProgress } from '@chakra-ui/react'
 import { useGetAllProductsQuery } from "../services/productSlice";
 import Product from "../components/product";
 
+
+
 function ProductPage() {
-    const { data: allProducts, isLoading } = useGetAllProductsQuery();
+    let [searchParams, setSearchParams] = useSearchParams();
+    
+    const { data: allProducts, isLoading } = useGetAllProductsQuery(searchParams.toString());
 
     return (         
         <div>
-
+            
         	{isLoading? <CircularProgress isIndeterminate color='green.300' /> :
-            allProducts?.map((record) => (
+            allProducts.items?.map((record) => (
 
                 <Product key={record.id} record={record}/>                
             	
         	))}
+            
     	</div>
     );
 }

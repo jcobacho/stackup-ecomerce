@@ -8,7 +8,7 @@ import type { RootState } from "../../store";
 
 // Define our service using a base URL and expected endpoints
 export const productApi = createApi({
-	reducerPath: "blogApi",
+	reducerPath: "productApi",
 	// Change `localhost` to a forwarded address if using a cloud
 	// environment
 	baseQuery: fetchBaseQuery({
@@ -19,12 +19,12 @@ export const productApi = createApi({
 	tagTypes: ["ProductModel"],
 	endpoints: (builder) => {
     	return {
-        	getAllProducts: builder.query<ProductModel[], void>({
-            	query: () => ({
-                	url: "inventory/products",
+        	getAllProducts: builder.query<ProductModel[], string>({
+            	query: (q) => ({
+                	url: `inventory/products?${q}`,
             	}),
-            	transformResponse: (response: { posts: BlogModel[] }, _meta, _arg) =>
-                	response.items,
+            	transformResponse: (response: { items: ProductModel[] }, _meta, _arg) =>
+                	response,
             	transformErrorResponse: (response, _meta, _arg) => {
                 	return response.data;
             	},
