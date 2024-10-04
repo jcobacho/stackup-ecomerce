@@ -24,8 +24,6 @@ export const productApi = createApi({
             	query: (page) => ({
                 	url: `inventory/products?page=${page}`,
             	}),
-            	transformResponse: (response: { items: ProductModel[] }, _meta, _arg) =>
-                	response,
             	transformErrorResponse: (response, _meta, _arg) => {
                 	return response.data;
             	},
@@ -49,7 +47,7 @@ export const productApi = createApi({
                 forceRefetch({ currentArg, previousArg }) {
                     return currentArg !== previousArg;
                 },
-            	providesTags: ["BlogModel"],
+            	providesTags: ["ProductModel"],
         	}),
         	// getBlogPostsByUsername: builder.query<BlogModel[], string>({
             // 	query: (user) => `posts/user/${user}`,
