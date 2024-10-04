@@ -1,11 +1,10 @@
 // import { useLoaderData, useNavigate } from "react-router";
 // import { useSearchParams } from "react-router-dom";
 
-import { CircularProgress } from '@chakra-ui/react'
 import { useGetAllProductsQuery } from "../services/productSlice";
 import Product from "../components/product";
 import { useEffect, useState } from "react";
-
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 
 function ProductPage() {
     // let [searchParams, setSearchParams] = useSearchParams();
@@ -45,16 +44,16 @@ function ProductPage() {
       }, [setPage, isFetching, allProducts]);
 
     return (         
-        <div>
-            
-        	{records.map((record: { id: any; }) => (
-                <Product key={record.id} record={record}/>             
-            	
-        	))}
-
-            {isFetching && <CircularProgress isIndeterminate color='green.300' />}
-            
-    	</div>
+        <Container>
+            <Row>            
+                {records.map((record: { id: any; }) => (
+                    <Col key={record.id} xs={12} md={4} lg={3}>
+                        <Product record={record}/>             
+                    </Col>
+                ))}
+                {isFetching && <div className={'d-flex justify-content-center'}> <Spinner animation="grow" /></div>}
+            </Row>
+    	</Container>
     );
 }
 

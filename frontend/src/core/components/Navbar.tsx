@@ -22,6 +22,7 @@ import {
   MoonIcon,
 } from '@chakra-ui/icons'
 import { NavLink } from "react-router-dom";
+import { FiShoppingCart } from 'react-icons/fi';
 
 export default function WithSubnavigation({openDrawer}) {
   const { isOpen, onToggle } = useDisclosure()
@@ -64,7 +65,7 @@ export default function WithSubnavigation({openDrawer}) {
 
         <Flex flex={{ base: 1 }}>
             <Button onClick={openDrawer}>
-                <MoonIcon/>
+                <FiShoppingCart/>
             </Button>
         </Flex>
 
