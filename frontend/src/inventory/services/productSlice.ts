@@ -33,15 +33,17 @@ export const productApi = createApi({
                 },
                 // Always merge incoming data to the cache entry
                 merge: (currentCache, newItems) => {
-
-                    currentCache.count = newItems.count
-                    currentCache.current_page = newItems.current_page
-                    currentCache.total_pages = newItems.total_pages
-                    currentCache.previous = newItems.previous
-                    currentCache.next = newItems.next
-                    currentCache.hasMore = newItems.hasMore
-                    currentCache.items = currentCache.items.concat(newItems.items || [])
-
+                    if (newItems.current_page > 1) {
+                        currentCache.count = newItems.count
+                        currentCache.current_page = newItems.current_page
+                        currentCache.total_pages = newItems.total_pages
+                        currentCache.previous = newItems.previous
+                        currentCache.next = newItems.next
+                        currentCache.hasMore = newItems.hasMore
+                        currentCache.items = currentCache.items.concat(newItems.items || [])
+                        return currentCache;
+                      }
+                      return newItems;
                 },
                 // Refetch when the page arg changes
                 forceRefetch({ currentArg, previousArg }) {
