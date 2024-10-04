@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
+    AllProductResponse,
 	ProductModel
 } from "./types";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
@@ -19,15 +20,35 @@ export const productApi = createApi({
 	tagTypes: ["ProductModel"],
 	endpoints: (builder) => {
     	return {
-        	getAllProducts: builder.query<ProductModel[], string>({
-            	query: (q) => ({
-                	url: `inventory/products?${q}`,
+        	getAllProducts: builder.query<AllProductResponse, number>({
+            	query: (page) => ({
+                	url: `inventory/products?page=${page}`,
             	}),
             	transformResponse: (response: { items: ProductModel[] }, _meta, _arg) =>
                 	response,
             	transformErrorResponse: (response, _meta, _arg) => {
                 	return response.data;
             	},
+                serializeQueryArgs: ({ endpointName }) => {
+                    
+                    return endpointName
+                },
+                // Always merge incoming data to the cache entry
+                merge: (currentCache, newItems) => {
+
+                    currentCache.count = newItems.count
+                    currentCache.current_page = newItems.current_page
+                    currentCache.total_pages = newItems.total_pages
+                    currentCache.previous = newItems.previous
+                    currentCache.next = newItems.next
+                    currentCache.hasMore = newItems.hasMore
+                    currentCache.items = currentCache.items.concat(newItems.items || [])
+
+                },
+                // Refetch when the page arg changes
+                forceRefetch({ currentArg, previousArg }) {
+                    return currentArg !== previousArg;
+                },
             	providesTags: ["BlogModel"],
         	}),
         	// getBlogPostsByUsername: builder.query<BlogModel[], string>({

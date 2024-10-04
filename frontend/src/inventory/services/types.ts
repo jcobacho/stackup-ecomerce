@@ -14,7 +14,7 @@ export type AllProductResponse = {
     previous: number | null
     next: number | null
     hasMore: boolean
-    data: ProductModel[]
+    items: ProductModel[]
 };
 
 // export interface BlogCreateRequest {
