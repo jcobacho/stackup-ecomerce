@@ -13,7 +13,16 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useColorMode,
+  Center,
+  Avatar,
 } from '@chakra-ui/react'
+
 import {
   HamburgerIcon,
   CloseIcon,
@@ -23,9 +32,12 @@ import {
 } from '@chakra-ui/icons'
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactRouterLink } from 'react-router-dom'
+import { logout } from '../../auth/services/authSlice';
+import store from "../../store";
 
-export default function WithSubnavigation({openDrawer}) {
+export default function WithSubnavigation({openDrawer, isAuthenticated, authState}) {
   const { isOpen, onToggle } = useDisclosure()
+
 
   return (
     <Box>
@@ -69,7 +81,7 @@ export default function WithSubnavigation({openDrawer}) {
             </Button>
         </Flex>
 
-        <Stack
+        {!isAuthenticated?<Stack
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
           direction={'row'}
@@ -90,7 +102,36 @@ export default function WithSubnavigation({openDrawer}) {
             }}>
             Sign Up
           </Button>
-        </Stack>
+        </Stack>:
+        <Menu>
+          <MenuButton
+            as={Button}
+            rounded={'full'}
+            variant={'link'}
+            cursor={'pointer'}
+            minW={0}>
+            <Avatar
+              size={'sm'}
+              src={'https://avatars.dicebear.com/api/male/username.svg'}
+            />
+          </MenuButton>
+          <MenuList alignItems={'center'}>
+            <br />
+            <Center>
+              <Avatar
+                size={'2xl'}
+                src={'https://avatars.dicebear.com/api/male/username.svg'}
+              />
+            </Center>
+            <br />
+            <Center>
+              <p>{authState.user.username}</p>
+            </Center>
+            <br />
+            <MenuDivider />
+            <MenuItem onClick={() => store.dispatch(logout())}>Logout</MenuItem>
+          </MenuList>
+        </Menu>}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
