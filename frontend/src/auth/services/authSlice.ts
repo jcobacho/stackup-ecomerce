@@ -51,20 +51,45 @@ const authSlice = createSlice({
     	user: null,
     	token: null,
 	} as AuthState,
-	reducers: {},
+	reducers: {
+		refreshAuthentication: (state) => {
+			const isAuthenticated = sessionStorage.getItem("isAuthenticated");
+			if (isAuthenticated === "true") {
+					const userSession = sessionStorage.getItem("user");
+					const response: UserResponse = JSON.parse(
+							userSession as string,
+					) as UserResponse;
+					state.token = response.access;
+					state.user = response.user;
+			}
+			return state;
+		},
+		logout: (state) => {
+			state.token = null;
+			state.user = null;
+			sessionStorage.removeItem("isAuthenticated");
+            sessionStorage.removeItem("user");
+			return state
+		}
+	},
 	extraReducers(builder) {
     	builder.addMatcher(
         	authApi.endpoints.login.matchFulfilled,
         	(state, { payload }) => {
 				state.token = payload.access;
             	state.user = payload.user;
+				sessionStorage.setItem("isAuthenticated", "true");
+                sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
+                            	
             	return state;
         	},
     	);    	
 	},
 });
 
+
 export default authSlice.reducer;
+export const { refreshAuthentication, logout } = authSlice.actions;
 
 // Exporting the generated methods from createApi
 export const {
