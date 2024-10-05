@@ -7,26 +7,19 @@ import './App.css'
 import { RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import NotFound from './core/pages/404'
-import Header from './core/components/Header'
+// import Header from './core/components/Header'
 import HomePage from './core/pages/HomePage';
+import LoginPage from './auth/pages/LoginPage'
 
 function App() {
 
   const router = createBrowserRouter([
-    // {
-    //     path: "/",
-    //     element: (
-    //         <Login authState={authState} isAuthenticated={isAuthenticated} />
-    //     ),
-    //     // children: [
-    //     //     {
-    //     //         path: "register",
-    //     //         element: (
-    //     //             <Register authState={authState} isAuthenticated={isAuthenticated} />
-    //     //         ),
-    //     //     },
-    //     // ],
-    // },
+    {
+        path: "/login",
+        element: (
+            <LoginPage />
+        )       
+    },
     {
         path: "/",
         element: (
@@ -36,21 +29,7 @@ function App() {
             {
                 path: "/products",
                 element: <ProductPage />,
-            },
-            // {
-            //     path: "user/:username",
-            //     element: <UserSpecificPosts isAuthenticated={isAuthenticated} />,
-            //     loader: async ({ params }) => {
-            //         return params.username;
-            //     },
-            // },
-            // {
-            //     path: "user/:username/post/edit/:postId",
-            //     element: <EditPost isAuthenticated={isAuthenticated} />,
-            //     loader: ({ params }) => {
-            //         return { username: params.username, postId: params.postId };
-            //     },
-            // },
+            },            
         ],
     },
     {
