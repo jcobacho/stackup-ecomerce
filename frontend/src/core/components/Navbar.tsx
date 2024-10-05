@@ -21,8 +21,8 @@ import {
   ChevronRightIcon,
   MoonIcon,
 } from '@chakra-ui/icons'
-import { NavLink } from "react-router-dom";
 import { FiShoppingCart } from 'react-icons/fi';
+import { Link as ReactRouterLink } from 'react-router-dom'
 
 export default function WithSubnavigation({openDrawer}) {
   const { isOpen, onToggle } = useDisclosure()
@@ -74,7 +74,7 @@ export default function WithSubnavigation({openDrawer}) {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
+          <Button as={ReactRouterLink} fontSize={'sm'} fontWeight={400} variant={'link'} to={'/login'}>
             Sign In
           </Button>
           <Button
@@ -112,7 +112,7 @@ const DesktopNav = () => {
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
               <Box
-                // as="a"
+                as={ReactRouterLink}
                 p={2}
                 // href={navItem.href ?? '#'}
                 fontSize={'sm'}
@@ -121,10 +121,9 @@ const DesktopNav = () => {
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor,
-                }}>
-                    <Text>
-                        <NavLink to={navItem.href}>{navItem.label}</NavLink>
-                    </Text>
+                }}
+                to={navItem.href}>
+                    {navItem.label}
                 
               </Box>
             </PopoverTrigger>
