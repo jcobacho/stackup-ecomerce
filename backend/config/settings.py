@@ -40,8 +40,11 @@ INSTALLED_APPS = [
 
     # 3rd party
     'corsheaders',
+    'ninja_extra',
+
 
     # my apps
+    'authapi',
     'api',
     'inventory'
 ]
@@ -130,9 +133,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#NINJA
-NINJA_PAGINATION_PER_PAGE = 20
+#NINJA 
+# NINJA_PAGINATION_PER_PAGE = 1
 
+#NINJA jwt
+NINJA_JWT = {
+'TOKEN_OBTAIN_PAIR_INPUT_SCHEMA': "authapi.schema.MyTokenObtainPairInputSchema"
+}
 #CORS
 CORS_ALLOW_CREDENTIALS = True
 
