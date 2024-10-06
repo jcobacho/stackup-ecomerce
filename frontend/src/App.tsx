@@ -10,25 +10,37 @@ import NotFound from './core/pages/404'
 // import Header from './core/components/Header'
 import HomePage from './core/pages/HomePage';
 import LoginPage from './auth/pages/LoginPage'
+import { useAppDispatch, useAppSelector } from './store'
+import Root from './core/pages/Root'
+import { refreshAuthentication } from './auth/services/authSlice'
 
 function App() {
 
+    const authState = useAppSelector((state) => state.auth);
+        
+    if (sessionStorage.getItem("isAuthenticated") === "true" && authState.token === null) {
+        console.log("needs update!")
+        const dispatch = useAppDispatch()
+        dispatch(refreshAuthentication())
+    }
+  
   const router = createBrowserRouter([
     {
         path: "/login",
-        element: (
-            <LoginPage />
-        )       
+        element: <LoginPage/>
+                
     },
     {
         path: "/",
-        element: (
-            <HomePage />
-        ),        
+        element: <Root  />,                  
         children: [
             {
+                path: "/",
+                element: <HomePage  />,
+            },  
+            {
                 path: "/products",
-                element: <ProductPage />,
+                element: <ProductPage  />,
             },            
         ],
     },
