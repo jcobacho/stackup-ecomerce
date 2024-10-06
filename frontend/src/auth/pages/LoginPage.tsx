@@ -34,10 +34,10 @@ export default function LoginPage() {
 
       const { data, error} = await login(loginFormData)
       if (data){
-        navigate('/products')
+        return navigate('/')
 
       }
-      else if(error){
+      if(error){
         alert(error.detail)
       }     
       
