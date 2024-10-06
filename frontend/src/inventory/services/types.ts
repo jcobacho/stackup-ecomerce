@@ -9,12 +9,9 @@ export interface ProductModel {
 
 export type AllProductResponse = {
 	count: number
-    current_page: number
-    total_pages: number
     previous: number | null
     next: number | null
-    hasMore: boolean
-    items: ProductModel[]
+    results: ProductModel[]
 };
 
 // export interface BlogCreateRequest {

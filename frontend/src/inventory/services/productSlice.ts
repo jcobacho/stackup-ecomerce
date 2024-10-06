@@ -5,6 +5,7 @@ import type {
 } from "./types";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
+import { ErrorResponse } from "../../core/services/error-types";
 // import type { ErrorResponse } from "../error-types";
 
 // Define our service using a base URL and expected endpoints
@@ -14,7 +15,20 @@ export const productApi = createApi({
 	// environment
 	baseQuery: fetchBaseQuery({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
-    	baseUrl: "http://localhost:8000/api/",
+    	baseUrl: "http://localhost:8000/api",
+        prepareHeaders: (headers, { getState, endpoint }) => {
+        	const token = (getState() as RootState).auth.token;
+        	// Some of the endpoints don't require logins
+        	if (
+            	token 
+                // &&
+            	// endpoint !== "posts/all" &&
+            	// !endpoint.startsWith("posts/user")
+        	) {
+            	headers.set("Authorization", `Bearer ${token}`);
+        	}
+        	return headers;
+    	},
     	credentials: "include",
 	}),
 	tagTypes: ["ProductModel"],
@@ -22,10 +36,10 @@ export const productApi = createApi({
     	return {
         	getAllProducts: builder.query<AllProductResponse, number>({
             	query: (page) => ({
-                	url: `inventory/products?page=${page}`,
+                	url: `/products?page=${page}`,
             	}),
             	transformErrorResponse: (response, _meta, _arg) => {
-                	return response.data;
+                	return response.data as ErrorResponse;
             	},
                 serializeQueryArgs: ({ endpointName }) => {
                     
@@ -33,14 +47,11 @@ export const productApi = createApi({
                 },
                 // Always merge incoming data to the cache entry
                 merge: (currentCache, newItems) => {
-                    if (newItems.current_page > 1) {
+                    if (!newItems.previous) {
                         currentCache.count = newItems.count
-                        currentCache.current_page = newItems.current_page
-                        currentCache.total_pages = newItems.total_pages
                         currentCache.previous = newItems.previous
                         currentCache.next = newItems.next
-                        currentCache.hasMore = newItems.hasMore
-                        currentCache.items = currentCache.items.concat(newItems.items || [])
+                        currentCache.results = currentCache.results.concat(newItems.results || [])
                         return currentCache;
                       }
                       return newItems;

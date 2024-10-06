@@ -12,7 +12,7 @@ function ProductPage() {
     
     const { data: allProducts, isFetching } = useGetAllProductsQuery(page);
     
-    const records = allProducts?.items ?? [];
+    const records = allProducts?.results ?? [];
     let nextPage = allProducts?.next || 1
   
     // searchParams.set('page', page)
@@ -30,7 +30,7 @@ function ProductPage() {
             let modifier = 200; 
             const scrolledToBottom = currentScroll + modifier > documentHeight
             
-            if(scrolledToBottom && !isFetching && allProducts?.hasMore) {
+            if(scrolledToBottom && !isFetching && allProducts?.next) {
                 setPage(nextPage)
             }
             
