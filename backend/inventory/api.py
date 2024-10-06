@@ -13,7 +13,8 @@ from ninja_extra import (
 )
 from ninja_extra.controllers.response import Detail
 from inventory.models import Product
-
+from ninja_extra import permissions
+from ninja_jwt.authentication import JWTAuth
 
 @api_controller('/products')
 class ProductsController(ControllerBase):
@@ -36,10 +37,10 @@ class ProductsController(ControllerBase):
     #     user.delete()
     #     return self.create_response('', status_code=status.HTTP_204_NO_CONTENT)
 
-    @http_get("", response=pagination.PaginatedResponseSchema[ProductSchema])
+    @http_get("", response=pagination.PaginatedResponseSchema[ProductSchema], auth=JWTAuth())
     @pagination.paginate(pagination.PageNumberPaginationExtra)
     def list_products(self):
-        return self.product_model.objects.all()
+        return self.product_model.objects.select_related('category')
 
     @http_get('/{product_id}', response=ProductSchema)
     def get_product_by_id(self, product_id: int):
