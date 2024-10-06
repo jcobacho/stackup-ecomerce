@@ -1,6 +1,7 @@
 from inventory.models import Product
 from ninja import Schema
 from decimal import Decimal
+from typing import Optional
 
 class CategorySchema(Schema):
     id: int
@@ -11,4 +12,4 @@ class ProductSchema(Schema):
     name: str
     image_url: str
     price: float
-    category: CategorySchema = None  # ! None - to mark it as optional
+    category: Optional[CategorySchema] = None  # ! None - to mark it as optional
