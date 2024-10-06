@@ -50,23 +50,26 @@ const authSlice = createSlice({
 	initialState: {
     	user: null,
     	token: null,
+		refreshtoken: null
 	} as AuthState,
 	reducers: {
 		refreshAuthentication: (state) => {
 			const isAuthenticated = sessionStorage.getItem("isAuthenticated");
 			if (isAuthenticated === "true") {
-					const userSession = sessionStorage.getItem("user");
-					const response: UserResponse = JSON.parse(
-							userSession as string,
-					) as UserResponse;
-					state.token = response.access;
-					state.user = response.user;
+				const userSession = sessionStorage.getItem("user");
+				const response: UserResponse = JSON.parse(
+						userSession as string,
+				) as UserResponse;
+				state.token = response.access;
+				state.user = response.user;
+				state.refreshtoken = response.refresh;
 			}
 			return state;
 		},
 		logout: (state) => {
 			state.token = null;
 			state.user = null;
+			state.refreshtoken = null;
 			sessionStorage.removeItem("isAuthenticated");
             sessionStorage.removeItem("user");
 			return state
@@ -78,6 +81,7 @@ const authSlice = createSlice({
         	(state, { payload }) => {
 				state.token = payload.access;
             	state.user = payload.user;
+            	state.refreshtoken = payload.refresh;
 				sessionStorage.setItem("isAuthenticated", "true");
                 sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
                             	
