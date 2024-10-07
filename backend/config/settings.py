@@ -133,6 +133,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#AUTH
+AUTH_USER_MODEL = "authapi.User"
+
 #NINJA 
 # NINJA_PAGINATION_PER_PAGE = 1
 
