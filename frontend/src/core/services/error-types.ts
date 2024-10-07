@@ -1,11 +1,12 @@
 type ErrorResponse = {
 	code?: string | null;
-	detail?: string | null
+	detail?: string
+	
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: This can be anything
 const isErrorResponse = (error: any): error is ErrorResponse =>
-	"code" in error;
+	"detail" in error;
 
 export default isErrorResponse;
 export type { ErrorResponse };

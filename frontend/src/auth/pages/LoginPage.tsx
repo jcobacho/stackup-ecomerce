@@ -38,7 +38,7 @@ export default function LoginPage() {
 
       }
       if(error){
-        alert(error.detail)
+        alert(error.data?.detail)
       }     
       
     } catch (err) {

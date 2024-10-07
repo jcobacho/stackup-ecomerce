@@ -7,7 +7,9 @@ export interface User {
 	id: number;
 	username: string;
 	email: string;
-	role: string;
+	isShopper: boolean;
+	isSeller: boolean;
+	isStaff: boolean;
 }
 
 export type AuthState = {

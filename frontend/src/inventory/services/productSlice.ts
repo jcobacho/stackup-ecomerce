@@ -38,10 +38,7 @@ export const productApi = createApi({
             	query: (page) => ({
                 	url: `/products?page=${page}`,
             	}),
-            	transformErrorResponse: (response, _meta, _arg) => {
-                	return response.data as ErrorResponse;
-            	},
-                serializeQueryArgs: ({ endpointName }) => {
+            	serializeQueryArgs: ({ endpointName }) => {
                     
                     return endpointName
                 },
