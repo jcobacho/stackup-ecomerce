@@ -1,5 +1,4 @@
 // import { Card, Image, Text, CardBody, CardFooter, Stack, Heading, Divider, ButtonGroup, Button } from '@chakra-ui/react'
-import 'bootstrap/dist/css/bootstrap.css';
 
 import {
     Flex,

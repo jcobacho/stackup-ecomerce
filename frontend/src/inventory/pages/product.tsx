@@ -4,7 +4,8 @@
 import { useGetAllProductsQuery } from "../services/productSlice";
 import Product from "../components/product";
 import { useEffect, useState } from "react";
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import { SimpleGrid } from "@chakra-ui/react";
+import { Spinner } from '@chakra-ui/react'
 
 function ProductPage() {
     // let [searchParams, setSearchParams] = useSearchParams();
@@ -44,16 +45,15 @@ function ProductPage() {
       }, [setPage, isFetching, allProducts]);
 
     return (         
-        <Container>
-            <Row>            
+        <div>
+            <SimpleGrid columns={4} spacingX='40px' spacingY='20px'>
+
                 {records.map((record: { id: any; }) => (
-                    <Col key={record.id} xs={12} md={4} lg={3}>
-                        <Product record={record}/>             
-                    </Col>
+                        <Product key={record.id} record={record}/>             
                 ))}
                 {isFetching && <div className={'d-flex justify-content-center'}> <Spinner animation="grow" /></div>}
-            </Row>
-    	</Container>
+            </SimpleGrid>
+    	</div>
     );
 }
 
