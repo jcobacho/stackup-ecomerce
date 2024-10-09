@@ -5,12 +5,16 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { authApi } from "./auth/services/authSlice";
 import authReducer from "./auth/services/authSlice";
+import { userApi } from "./user/services/userSlice";
+// import userReducer from "./user/services/userSlice";
 
 
 const store = configureStore({
 	reducer: {
     	[productApi.reducerPath]: productApi.reducer,
     	[authApi.reducerPath]: authApi.reducer,
+    	[userApi.reducerPath]: userApi.reducer,
+    	// user: userReducer,
 		auth: authReducer
 
     },
@@ -18,6 +22,7 @@ const store = configureStore({
     	return getDefaultMiddleware()
         	.concat(productApi.middleware)
         	.concat(authApi.middleware)
+        	.concat(userApi.middleware)
 	},
 });
 

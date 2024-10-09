@@ -5,7 +5,6 @@ import type {
 	LoginRequest,
 	AuthState
 } from "./types";
-import type { RootState } from "../../store";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { toCamelResponseHandler } from "../../core/utils";
 
