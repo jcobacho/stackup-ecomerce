@@ -8,13 +8,21 @@ from ninja import Schema
 
 
 class UserSchema(Schema):
+    id: int
     first_name: str
-    email: str
     username: str
     is_shopper: bool
     is_seller: bool
     is_staff: bool
 
+
+class UserCreateSchema(Schema):
+    first_name: str
+    username: str
+    password: str
+    is_shopper: bool
+    is_seller: bool
+    is_staff: bool
 
 class MyTokenObtainPairOutSchema(Schema):
     refresh: str
