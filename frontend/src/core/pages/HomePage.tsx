@@ -1,5 +1,5 @@
 
-import { Container } from 'react-bootstrap';
+import { Container } from '@chakra-ui/react'
 
 function HomePage() {
 
