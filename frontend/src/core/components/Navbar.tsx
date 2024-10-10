@@ -302,6 +302,11 @@ const NAV_ITEMS: Array<NavItem> = [
     href: '/products',
 
   },
+  {
+    label: 'Users',
+    href: '/users',
+
+  },
 //   {
 //     label: 'Find Work',
 //     children: [

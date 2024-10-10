@@ -13,6 +13,7 @@ import LoginPage from './auth/pages/LoginPage'
 import { useAppDispatch, useAppSelector } from './store'
 import Root from './core/pages/Root'
 import { refreshAuthentication } from './auth/services/authSlice'
+import UserPage from './user/pages/UserPage'
 
 function App() {
 
@@ -41,6 +42,10 @@ function App() {
             {
                 path: "/products",
                 element: <ProductPage  />,
+            },            
+            {
+                path: "/users",
+                element: <UserPage  />,
             },            
         ],
     },
