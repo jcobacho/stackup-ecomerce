@@ -16,12 +16,13 @@ import {
     Button,
     useDisclosure,
   } from '@chakra-ui/react'
+import { useState } from 'react';
 // import { useState } from 'react';
 // import { useSelector } from 'react-redux';
 // import { useAppSelector } from '../../store';
 import UserModal from '../components/Modal';
 import { UserModel } from '../services/types';
-import { useGetAllUsersQuery, useUpdateUserPermissionMutation } from '../services/userSlice';
+import { useGetAllUsersQuery } from '../services/userSlice';
 
 function UserPage() {
 
@@ -29,47 +30,22 @@ function UserPage() {
 
     const records = data?.results ?? []
 
-    const [updateUserPermission, {isLoading: isUpdating, originalArgs}] = useUpdateUserPermissionMutation();
     
     const  { isOpen, onOpen, onClose }= useDisclosure()
+    const [selectedRecord, setSelectedRecord] = useState({})
 
-    // const count = useSelector(selectTotalUsers);
-    // const records = useSelector(selectAllUsers);
-    // const usersLoading = useSelector(state => state.users.loading);
-    // const records = []
-    // console.log("records")
-    // console.log(records)
-    // console.log("originalArgs")
-    // console.log(originalArgs)
+    function handleEditButton(e, record){
 
-    async function onRoleChange(e) {
-        e.preventDefault();
+        setSelectedRecord(record)
+        onOpen()
 
-        const dataid = e.target.closest('tr').dataset.id
-        const role = e.target.value
-        const value = e.target.checked
-
-        let params = {}
-        params[role] = value
-        params['id'] = dataid
-
-        try {
-
-            const { error } = await updateUserPermission(params)
-            if(error){
-                alert(error.data?.detail)
-            }     
-            
-        } catch (err) {
-            alert(`Failed to login; got ${err}`);
-        }
     }
 
     return ( 
 
         <>
-            <Button onClick={onOpen}>Create</Button>
-            <UserModal isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
+            <Button onClick={(e) => {setSelectedRecord({}); onOpen()}}>Create</Button>
+            <UserModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} record={selectedRecord}/>
 
             {isFetching && <Center style={{ marginTop: "30vh" }}> <Spinner /></Center>}
 
@@ -95,20 +71,20 @@ function UserPage() {
                                 <Td>{record.firstName}</Td>
                                 <Td>
                                     <Stack spacing={[1, 5]} direction={['column', 'row']}>
-                                        <Checkbox size='lg' colorScheme='red' readOnly={true} isChecked={record.isStaff} value={'isStaff'} onChange={onRoleChange}>
+                                        <Checkbox size='lg' colorScheme='red' readOnly={true} isChecked={record.isStaff}>
                                             Is Staff?
                                         </Checkbox>
-                                        <Checkbox size='lg' colorScheme='green' readOnly={true} isChecked={record.isShopper} value={'isShopper'} onChange={onRoleChange}>
+                                        <Checkbox size='lg' colorScheme='green' readOnly={true} isChecked={record.isShopper}>
                                             Is Shopper?
                                         </Checkbox>
-                                        <Checkbox size='lg' colorScheme='orange' readOnly={true} isChecked={record.isSeller} value={'isSeller'} onChange={onRoleChange}>
+                                        <Checkbox size='lg' colorScheme='orange' readOnly={true} isChecked={record.isSeller}>
                                             Is Seller?
                                         </Checkbox>
                                     </Stack>  
                                 </Td>
                                 <Td>
                                     <Stack direction='row' spacing={4}>
-                                        <Button leftIcon={<EditIcon />} colorScheme='teal' variant='solid' onClick={() => alert('clicked')}>
+                                        <Button leftIcon={<EditIcon />} colorScheme='teal' variant='solid' onClick={(e) => handleEditButton(e, record)}>
                                             Edit
                                         </Button>
                                         <Button leftIcon={<DeleteIcon />} colorScheme='red' variant='outline'>

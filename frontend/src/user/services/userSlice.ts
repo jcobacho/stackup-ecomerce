@@ -4,7 +4,7 @@ import { UserResponse } from "../../auth/services/types";
 
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
-import { AllUsersResponse, UserCreateRequest } from "./types";
+import { AllUsersResponse, UserCreateRequest, UserUpdateRequest } from "./types";
 
 
 // Define our service using a base URL and expected endpoints
@@ -46,6 +46,20 @@ export const userApi = createApi({
 			invalidatesTags: (result, error, { id }) => {
 				return [{ type: 'User', id }]
 			  },
+		}),
+		updateUser: builder.mutation<UserResponse, UserUpdateRequest>({
+			query: ({id, ...body}) => ({
+				url: `users/${id}`,
+				method: "PUT",
+				credentials: "include",
+				body: recursiveToSnake(body),
+			}),
+			invalidatesTags: (result, error, { id }) => {
+				return [{ type: 'User', id }]
+			  },
+			// transformErrorResponse(response, _meta, _arg) {
+			// 	return response.data as ErrorResponse;
+			// },
 		}),
 		updateUserPermission: builder.mutation({
 			query: ({id, ...patch}) => ({
@@ -105,6 +119,7 @@ export const userApi = createApi({
 export const {
 	useGetAllUsersQuery,
 	useCreateUserMutation,
+	useUpdateUserMutation,
 	useUpdateUserPermissionMutation,
 } = userApi;
 

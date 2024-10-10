@@ -12,24 +12,35 @@ import {
     Input,
     useDisclosure,
   } from '@chakra-ui/react'
-import { useState } from 'react';
-import { UserCreateRequest } from '../services/types';
-import { useCreateUserMutation } from '../services/userSlice';
+import { useEffect, useState } from 'react';
+import { UserCreateRequest, UserUpdateRequest } from '../services/types';
+import { useCreateUserMutation, useUpdateUserMutation } from '../services/userSlice';
 import UserForm from './UserForm'
 
-  export default function UserModal({ isOpen, onOpen, onClose }) {
+  export default function UserModal({ isOpen, onOpen, onClose, record }) {
   
-    const [createUser, {isLoading: isUpdating}] = useCreateUserMutation();
-    const [userFormData, setUserFormData] = useState<UserCreateRequest>({
+    const [createUser, {isLoading: isCreating}] = useCreateUserMutation();
+    const [updateUser, {isLoading: isUpdating}] = useUpdateUserMutation();
+
+    
+    const [userFormData, setUserFormData] = useState<UserUpdateRequest | UserCreateRequest>({
       username: "",
       firstName: "",
       password: "",
       isShopper: false,
       isSeller: false,
       isStaff: false
-    });
+  });
+
     // const initialRef = React.useRef(null)
     // const finalRef = React.useRef(null)
+
+    useEffect(() => {
+
+      if(record?.id)
+        setUserFormData(record)
+
+    }, [record])
 
     async function handleFormSubmit(e){
         // const form = e.target
@@ -37,7 +48,18 @@ import UserForm from './UserForm'
 
         try {
 
-            const { data, error } = await createUser(userFormData)
+            let result;
+            // let data, error;
+            if(record?.id){
+              result = await updateUser({...userFormData, id: record.id})
+
+
+            }else{
+              result = await createUser(userFormData)
+
+            }
+            const { data, error } = result;
+
             if (data){
               onClose()
             }
@@ -61,17 +83,17 @@ import UserForm from './UserForm'
           <ModalOverlay />
 
           <ModalContent>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleFormSubmit} >
 
             <ModalHeader>Create your account</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
 
-                    <UserForm userFormData={userFormData} setUserFormData={setUserFormData}/>
+                  <UserForm userFormData={userFormData} setUserFormData={setUserFormData}/>
             </ModalBody>
   
             <ModalFooter>
-              <Button isLoading={isUpdating} colorScheme='blue' mr={3} type={'submit'}>
+              <Button isLoading={isUpdating || isCreating} colorScheme='blue' mr={3} type={'submit'}>
                 Save
               </Button>
               <Button onClick={onClose}>Cancel</Button>

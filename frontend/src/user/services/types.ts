@@ -8,6 +8,16 @@ export interface UserCreateRequest {
 	isStaff: boolean;
 }
 
+export interface UserUpdateRequest {
+	id: string | number;
+	username: string;
+	firstName: string;
+	password: string
+	isShopper: boolean;
+	isSeller: boolean;
+	isStaff: boolean;
+}
+
 export interface UserModel {
 	id: number;
 	username: string;
