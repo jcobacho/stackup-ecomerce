@@ -1,10 +1,10 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UserResponse } from "../../auth/services/types";
 
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
-import { AllUsersResponse, UserCreateRequest, UserUpdateRequest } from "./types";
+import { RootState } from "../../store";
+import { AllUsersResponse, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
 
 
 // Define our service using a base URL and expected endpoints
@@ -15,6 +15,19 @@ export const userApi = createApi({
 	baseQuery: fetchBaseQuery({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
     	baseUrl: "http://localhost:8000/api",
+		prepareHeaders: (headers, { getState, endpoint }) => {
+        	const token = (getState() as RootState).auth.access;
+        	// Some of the endpoints don't require logins
+        	if (
+            	token 
+                // &&
+            	// endpoint !== "posts/all" &&
+            	// !endpoint.startsWith("posts/user")
+        	) {
+            	headers.set("Authorization", `Bearer ${token}`);
+        	}
+        	return headers;
+    	},
     	credentials: "include",
 		responseHandler: toCamelResponseHandler
 	}),
@@ -33,7 +46,7 @@ export const userApi = createApi({
 				: [{ type: 'User', id: 'LIST' }]
 		}),
 
-		createUser: builder.mutation<UserResponse, UserCreateRequest>({
+		createUser: builder.mutation<UserModel, UserCreateRequest>({
 			query: (body) => ({
 				url: "users/",
 				method: "POST",
@@ -43,11 +56,11 @@ export const userApi = createApi({
 					return response.ok === true;
 				},
 			}),
-			invalidatesTags: (result, error, { id }) => {
-				return [{ type: 'User', id }]
+			invalidatesTags: (result, error) => {
+				return [{ type: 'User', id: result?.id }]
 			  },
 		}),
-		updateUser: builder.mutation<UserResponse, UserUpdateRequest>({
+		updateUser: builder.mutation<UserModel, UserUpdateRequest>({
 			query: ({id, ...body}) => ({
 				url: `users/${id}`,
 				method: "PUT",
@@ -75,7 +88,7 @@ export const userApi = createApi({
 				return [{ type: 'User', id }]
 			},
 		}),
-		deleteUser: builder.mutation<string, number>({
+		deleteUser: builder.mutation<void, number>({
 			query: (id) => ({
 				url: `users/${id}`,
 				method: "DELETE",
@@ -101,29 +114,30 @@ export const userApi = createApi({
 // userApi definition above
 // const userSlice = createSlice({
 // 	name: "user",
-// 	initialState: usersAdapter.getInitialState(),
+// 	initialState: {},
 // 	reducers: {
 		
 // 	},
 // 	extraReducers(builder) {
 // 		builder.addMatcher(
-//         	userApi.endpoints.getAllUsers.matchFulfilled,
+//         	userApi.endpoints.updateUser.matchFulfilled,
 //         	(state, { payload }) => {
-// 				const records = payload.results
-// 				usersAdapter.upsertMany(state, records);
-
-// 				return state;
-//         	},
-//     	);  
-//     	builder.addMatcher(
-//         	userApi.endpoints.updateUserPermission.matchFulfilled,
-//         	(state, { payload }) => {
-
-// 				usersAdapter.upsertOne(state, payload)
 				
-// 				return state;
-//         	},
-//     	);    	
+// 				console.log("state")
+// 				console.log(state)
+
+		// 		return state;
+        // 	},
+    	// );  
+    	// builder.addMatcher(
+        // 	userApi.endpoints.updateUserPermission.matchFulfilled,
+        // 	(state, { payload }) => {
+
+		// 		usersAdapter.upsertOne(state, payload)
+				
+		// 		return state;
+        // 	},
+    	// );    	
 // 	},
 // });
 

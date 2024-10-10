@@ -6,7 +6,7 @@ export interface LoginRequest {
 export interface User {
 	id: number;
 	username: string;
-	email: string;
+	firstName: string;
 	isShopper: boolean;
 	isSeller: boolean;
 	isStaff: boolean;
@@ -14,8 +14,8 @@ export interface User {
 
 export type AuthState = {
 	user: User | null;
-	token: string | null;
-	refreshtoken: string | null;
+	access: string | null;
+	refresh: string | null;
 };
 
 export interface UserResponse {
@@ -23,3 +23,4 @@ export interface UserResponse {
 	refresh: string;
 	user: User;
 }
+

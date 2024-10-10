@@ -17,7 +17,7 @@ export const productApi = createApi({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
     	baseUrl: "http://localhost:8000/api",
         prepareHeaders: (headers, { getState, endpoint }) => {
-        	const token = (getState() as RootState).auth.token;
+        	const token = (getState() as RootState).auth.access;
         	// Some of the endpoints don't require logins
         	if (
             	token 

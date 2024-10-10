@@ -13,18 +13,23 @@ import {
     useDisclosure,
   } from '@chakra-ui/react'
 import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { UserCreateRequest, UserUpdateRequest } from '../services/types';
 import { useCreateUserMutation, useUpdateUserMutation } from '../services/userSlice';
 import UserForm from './UserForm'
+import { updateAuthenticatedUser } from '../../auth/services/authSlice';
 
-  export default function UserModal({ isOpen, onOpen, onClose, record }) {
+export default function UserModal({ isOpen, onOpen, onClose, record }) {
   
     const [createUser, {isLoading: isCreating}] = useCreateUserMutation();
     const [updateUser, {isLoading: isUpdating}] = useUpdateUserMutation();
 
-    
+    const authState = useAppSelector((state) => state.auth);
+   
     const [userFormData, setUserFormData] = useState<UserUpdateRequest | UserCreateRequest>(record);
+    const dispatch = useAppDispatch()
 
+    
     // const initialRef = React.useRef(null)
     // const finalRef = React.useRef(null)
 
@@ -44,8 +49,7 @@ import UserForm from './UserForm'
             // let data, error;
             if(record?.id){
               result = await updateUser({...userFormData, id: record.id})
-
-
+              // update authState if the logged user was modified
             }else{
               result = await createUser(userFormData)
 
@@ -53,6 +57,10 @@ import UserForm from './UserForm'
             const { data, error } = result;
 
             if (data){
+              if (data.id === authState?.user?.id){
+                dispatch(updateAuthenticatedUser(data))
+              }
+
               onClose()
             }
 

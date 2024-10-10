@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import ProductPage from './inventory/pages/product'
 // import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
-import { RouterProvider } from "react-router";
+import { Navigate, RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
 import NotFound from './core/pages/404'
 // import Header from './core/components/Header'
@@ -14,13 +14,13 @@ import { useAppDispatch, useAppSelector } from './store'
 import Root from './core/pages/Root'
 import { refreshAuthentication } from './auth/services/authSlice'
 import UserPage from './user/pages/UserPage'
+import AccessDenied from './core/pages/403'
 
 function App() {
 
     const authState = useAppSelector((state) => state.auth);
-        
-    if (sessionStorage.getItem("isAuthenticated") === "true" && authState.token === null) {
-        console.log("needs update!")
+
+    if (sessionStorage.getItem("isAuthenticated") === "true" && authState.access === null) {
         const dispatch = useAppDispatch()
         dispatch(refreshAuthentication())
     }
@@ -41,11 +41,12 @@ function App() {
             },  
             {
                 path: "/products",
-                element: <ProductPage  />,
+                element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+
             },            
             {
                 path: "/users",
-                element: <UserPage  />,
+                element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
             },            
         ],
     },

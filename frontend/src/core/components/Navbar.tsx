@@ -38,6 +38,23 @@ import store from "../../store";
 export default function WithSubnavigation({openDrawer, isAuthenticated, authState}) {
   const { isOpen, onToggle } = useDisclosure()
 
+  function hasPerms(perms:Array<string>=[]){
+
+    if(perms.length===0)
+      return true
+
+    let flag = false
+    perms.map((perm:string) => {   
+            
+      if (isAuthenticated && authState?.user && authState.user[perm]){
+        flag = true
+        return
+      }
+
+    })
+    return flag
+
+  }
 
   return (
     <Box>
@@ -71,7 +88,7 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
+            <DesktopNav hasPerms={hasPerms} />
           </Flex>
         </Flex>
 
@@ -125,7 +142,7 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             </Center>
             <br />
             <Center>
-              <p>{authState.user.username}</p>
+              <p>{authState?.user?.username}</p>
             </Center>
             <br />
             <MenuDivider />
@@ -141,15 +158,17 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
   )
 }
 
-const DesktopNav = () => {
+const DesktopNav = ({hasPerms}) => {
   const linkColor = useColorModeValue('gray.600', 'gray.200')
   const linkHoverColor = useColorModeValue('gray.800', 'white')
   const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
     <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
+      {NAV_ITEMS.map((navItem) => {  
+
+        if(hasPerms(navItem.perms)){
+          return <Box key={navItem.label} >
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
               <Box
@@ -186,7 +205,8 @@ const DesktopNav = () => {
             )}
           </Popover>
         </Box>
-      ))}
+        }
+                  })}
     </Stack>
   )
 }
@@ -289,22 +309,25 @@ interface NavItem {
   subLabel?: string
   children?: Array<NavItem>
   href?: string
+  perms?: Array<string>
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Home',
     href: '/',
-
+    
   },
   {
     label: 'Products',
     href: '/products',
+    perms: ['isShopper', 'isSeller']
 
   },
   {
     label: 'Users',
     href: '/users',
+    perms: ['isStaff']
 
   },
 //   {

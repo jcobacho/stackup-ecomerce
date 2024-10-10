@@ -21,7 +21,6 @@ export const authApi = createApi({
 		responseHandler: toCamelResponseHandler
 	}),
 	
-
 	endpoints: (builder) => ({
         login: builder.mutation<UserResponse, LoginRequest>({
             query: (credentials) => ({
@@ -47,8 +46,8 @@ const authSlice = createSlice({
 	name: "auth",
 	initialState: {
     	user: null,
-    	token: null,
-		refreshtoken: null
+    	access: null,
+		refresh: null
 	} as AuthState,
 	reducers: {
 		refreshAuthentication: (state) => {
@@ -58,16 +57,23 @@ const authSlice = createSlice({
 				const response: UserResponse = JSON.parse(
 						userSession as string,
 				) as UserResponse;
-				state.token = response.access;
+				state.access = response.access;
 				state.user = response.user;
-				state.refreshtoken = response.refresh;
+				state.refresh = response.refresh;
 			}
 			return state;
 		},
+		updateAuthenticatedUser: (state, action) => {
+
+			state.user = action.payload;
+			sessionStorage.setItem("user", `${JSON.stringify(state)}`);
+			return state
+
+		},
 		logout: (state) => {
-			state.token = null;
+			state.access = null;
 			state.user = null;
-			state.refreshtoken = null;
+			state.refresh = null;
 			sessionStorage.removeItem("isAuthenticated");
             sessionStorage.removeItem("user");
 			return state
@@ -77,9 +83,9 @@ const authSlice = createSlice({
     	builder.addMatcher(
         	authApi.endpoints.login.matchFulfilled,
         	(state, { payload }) => {
-				state.token = payload.access;
+				state.access = payload.access;
             	state.user = payload.user;
-            	state.refreshtoken = payload.refresh;
+            	state.refresh = payload.refresh;
 				sessionStorage.setItem("isAuthenticated", "true");
                 sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
                             	
@@ -91,7 +97,7 @@ const authSlice = createSlice({
 
 
 export default authSlice.reducer;
-export const { refreshAuthentication, logout } = authSlice.actions;
+export const { refreshAuthentication, logout, updateAuthenticatedUser } = authSlice.actions;
 
 // Exporting the generated methods from createApi
 export const {
