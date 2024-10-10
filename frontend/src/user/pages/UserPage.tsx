@@ -15,8 +15,16 @@ import {
     Checkbox,
     Button,
     useDisclosure,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody,
+    AlertDialogFooter,
   } from '@chakra-ui/react'
+import * as React from 'react';
 import { useState } from 'react';
+import DeleteAlertDialog from '../components/DeleteAlertDialog';
 // import { useState } from 'react';
 // import { useSelector } from 'react-redux';
 // import { useAppSelector } from '../../store';
@@ -32,7 +40,18 @@ function UserPage() {
 
     
     const  { isOpen, onOpen, onClose }= useDisclosure()
-    const [selectedRecord, setSelectedRecord] = useState({})
+    const  { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete }= useDisclosure()
+    const [selectedRecord, setSelectedRecord] = useState({
+        username: "",
+        firstName: "",
+        password: "",
+        isShopper: false,
+        isSeller: false,
+        isStaff: false
+    })
+
+    const [toDelete, setToDelete] = useState(0)
+
 
     function handleEditButton(e, record){
 
@@ -41,11 +60,78 @@ function UserPage() {
 
     }
 
+    function handleCreateButton(e){
+
+        setSelectedRecord({
+            username: "",
+            firstName: "",
+            password: "",
+            isShopper: false,
+            isSeller: false,
+            isStaff: false
+        })
+        onOpen()
+
+    }
+
     return ( 
 
         <>
-            <Button onClick={(e) => {setSelectedRecord({}); onOpen()}}>Create</Button>
+            <Button onClick={handleCreateButton}>Create</Button>
             <UserModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} record={selectedRecord}/>
+            <DeleteAlertDialog isOpen={isOpenDelete}
+                                            onClose={onCloseDelete}
+                                            toDelete={toDelete}
+                                            setToDelete={setToDelete}/>
+            {/* <AlertDialog
+                                            isOpen={isOpenDelete}
+                                            leastDestructiveRef={cancelRef}
+                                            onClose={onCloseDelete}
+                                        >
+                                            <AlertDialogOverlay>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                                Delete Customer
+                                                </AlertDialogHeader>
+
+                                                <AlertDialogBody>
+                                                Are you sure? You can't undo this action afterwards.
+                                                </AlertDialogBody>
+
+                                                <AlertDialogFooter>
+                                                <Button ref={cancelRef} onClick={onCloseDelete}>
+                                                    Cancel
+                                                </Button>
+                                                <Button isLoading={isDeleting} colorScheme='red' onClick={async (e) =>  {
+
+                                                    if (!toDelete)
+                                                        return
+
+                                                    try {
+                                                       
+                                                        const { error, ...other } = await deleteUser(toDelete)
+                                                        if (error?.originalStatus === 204 && error?.data === ''){
+                                                            setToDelete(false)
+                                                            onCloseDelete()
+
+                                                        }
+                                                        
+                                                        else if(error){
+                                                            alert(error.data?.detail)
+                                                        }     
+                                                        
+                                                    } catch (err) {
+                                                        alert(`Failed to create user; got ${err}`);
+                                                    }
+                                                    
+
+                                                }} ml={3}>
+                                                    Delete
+                                                </Button>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                            </AlertDialogOverlay>
+            </AlertDialog> */}
 
             {isFetching && <Center style={{ marginTop: "30vh" }}> <Spinner /></Center>}
 
@@ -87,9 +173,10 @@ function UserPage() {
                                         <Button leftIcon={<EditIcon />} colorScheme='teal' variant='solid' onClick={(e) => handleEditButton(e, record)}>
                                             Edit
                                         </Button>
-                                        <Button leftIcon={<DeleteIcon />} colorScheme='red' variant='outline'>
+                                        <Button leftIcon={<DeleteIcon />} colorScheme='red' variant='outline' onClick={(e) => {setToDelete(record.id); onOpenDelete()}}>
                                             Delete
                                         </Button>
+                                        
                                     </Stack>
 
                                 </Td>

@@ -16,7 +16,7 @@ function UserForm({userFormData, setUserFormData}) {
                 <FormLabel>First Name</FormLabel>
                 <Input name="firstName" placeholder='First name' onChange={(e) =>
                                 setUserFormData({ ...userFormData, firstName: e.target.value })}
-                                value={userFormData.firstName}/>
+                                value={userFormData?.firstName }/>
               </FormControl>
 
               <FormControl mt={4}>

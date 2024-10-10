@@ -73,8 +73,24 @@ export const userApi = createApi({
 			}),
 			invalidatesTags: (result, error, { id }) => {
 				return [{ type: 'User', id }]
-			  },
-		  }),
+			},
+		}),
+		deleteUser: builder.mutation<string, number>({
+			query: (id) => ({
+				url: `users/${id}`,
+				method: "DELETE",
+				credentials: "include",
+				body: {}
+				
+			}),
+			invalidatesTags: (result, error, id) => {
+				return [{ type: 'User', id }]
+			},
+			// transformErrorResponse(response, _meta, _arg) {
+			// 	return response.data as ErrorResponse;
+			// },
+			
+		}),
 
     })
         	
@@ -121,6 +137,7 @@ export const {
 	useCreateUserMutation,
 	useUpdateUserMutation,
 	useUpdateUserPermissionMutation,
+	useDeleteUserMutation,
 } = userApi;
 
 // export const {

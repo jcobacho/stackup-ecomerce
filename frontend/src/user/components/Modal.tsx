@@ -23,24 +23,16 @@ import UserForm from './UserForm'
     const [updateUser, {isLoading: isUpdating}] = useUpdateUserMutation();
 
     
-    const [userFormData, setUserFormData] = useState<UserUpdateRequest | UserCreateRequest>({
-      username: "",
-      firstName: "",
-      password: "",
-      isShopper: false,
-      isSeller: false,
-      isStaff: false
-  });
+    const [userFormData, setUserFormData] = useState<UserUpdateRequest | UserCreateRequest>(record);
 
     // const initialRef = React.useRef(null)
     // const finalRef = React.useRef(null)
 
     useEffect(() => {
 
-      if(record?.id)
-        setUserFormData(record)
+      setUserFormData(record)
 
-    }, [record])
+    }, [setUserFormData, record])
 
     async function handleFormSubmit(e){
         // const form = e.target
@@ -85,7 +77,7 @@ import UserForm from './UserForm'
           <ModalContent>
           <form onSubmit={handleFormSubmit} >
 
-            <ModalHeader>Create your account</ModalHeader>
+            <ModalHeader>{userFormData?.id ? 'Edit': 'Create'} User</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
 
