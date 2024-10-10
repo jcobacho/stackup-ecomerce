@@ -24,6 +24,15 @@ class UserCreateSchema(Schema):
     is_seller: bool
     is_staff: bool
 
+class UserUpdateSchema(Schema):
+    first_name: str
+    username: str
+    password: str = None
+    is_shopper: bool
+    is_seller: bool
+    is_staff: bool
+
+
 class MyTokenObtainPairOutSchema(Schema):
     refresh: str
     access: str
