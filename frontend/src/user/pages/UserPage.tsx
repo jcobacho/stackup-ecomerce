@@ -83,56 +83,7 @@ function UserPage() {
                                             onClose={onCloseDelete}
                                             toDelete={toDelete}
                                             setToDelete={setToDelete}/>
-            {/* <AlertDialog
-                                            isOpen={isOpenDelete}
-                                            leastDestructiveRef={cancelRef}
-                                            onClose={onCloseDelete}
-                                        >
-                                            <AlertDialogOverlay>
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                                Delete Customer
-                                                </AlertDialogHeader>
-
-                                                <AlertDialogBody>
-                                                Are you sure? You can't undo this action afterwards.
-                                                </AlertDialogBody>
-
-                                                <AlertDialogFooter>
-                                                <Button ref={cancelRef} onClick={onCloseDelete}>
-                                                    Cancel
-                                                </Button>
-                                                <Button isLoading={isDeleting} colorScheme='red' onClick={async (e) =>  {
-
-                                                    if (!toDelete)
-                                                        return
-
-                                                    try {
-                                                       
-                                                        const { error, ...other } = await deleteUser(toDelete)
-                                                        if (error?.originalStatus === 204 && error?.data === ''){
-                                                            setToDelete(false)
-                                                            onCloseDelete()
-
-                                                        }
-                                                        
-                                                        else if(error){
-                                                            alert(error.data?.detail)
-                                                        }     
-                                                        
-                                                    } catch (err) {
-                                                        alert(`Failed to create user; got ${err}`);
-                                                    }
-                                                    
-
-                                                }} ml={3}>
-                                                    Delete
-                                                </Button>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                            </AlertDialogOverlay>
-            </AlertDialog> */}
-
+            
             {isFetching && <Center style={{ marginTop: "30vh" }}> <Spinner /></Center>}
 
             {!isFetching && 
@@ -157,13 +108,13 @@ function UserPage() {
                                 <Td>{record.firstName}</Td>
                                 <Td>
                                     <Stack spacing={[1, 5]} direction={['column', 'row']}>
-                                        <Checkbox size='lg' colorScheme='red' readOnly={true} isChecked={record.isStaff}>
+                                        <Checkbox size='lg' colorScheme='red' pointerEvents={'none'} readOnly={true} isChecked={record.isStaff}>
                                             Is Staff?
                                         </Checkbox>
-                                        <Checkbox size='lg' colorScheme='green' readOnly={true} isChecked={record.isShopper}>
+                                        <Checkbox size='lg' colorScheme='green' pointerEvents={'none'} readOnly={true} isChecked={record.isShopper}>
                                             Is Shopper?
                                         </Checkbox>
-                                        <Checkbox size='lg' colorScheme='orange' readOnly={true} isChecked={record.isSeller}>
+                                        <Checkbox size='lg' colorScheme='orange' pointerEvents={'none'} readOnly={true} isChecked={record.isSeller}>
                                             Is Seller?
                                         </Checkbox>
                                     </Stack>  
