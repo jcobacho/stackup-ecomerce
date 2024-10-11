@@ -24,6 +24,7 @@ import {
   } from '@chakra-ui/react'
 import * as React from 'react';
 import { useState } from 'react';
+import Loading from '../../core/components/Loading';
 import DeleteAlertDialog from '../components/DeleteAlertDialog';
 // import { useState } from 'react';
 // import { useSelector } from 'react-redux';
@@ -84,7 +85,7 @@ function UserPage() {
                                             toDelete={toDelete}
                                             setToDelete={setToDelete}/>
             
-            {isFetching && <Center style={{ marginTop: "30vh" }}> <Spinner /></Center>}
+            {isFetching && <Loading/>}
 
             {!isFetching && 
             

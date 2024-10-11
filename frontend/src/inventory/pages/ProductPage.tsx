@@ -6,6 +6,7 @@ import Product from "../components/Product";
 import { useEffect, useState } from "react";
 import { SimpleGrid } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
+import Loading from "../../core/components/Loading";
 
 function ProductPage() {
     // let [searchParams, setSearchParams] = useSearchParams();
@@ -46,13 +47,15 @@ function ProductPage() {
 
     return (         
         <div>
+            
+
             <SimpleGrid columns={4} spacingX='40px' spacingY='20px'>
 
                 {records.map((record: { id: any; }) => (
                         <Product key={record.id} record={record}/>             
                 ))}
-                {isFetching && <div className={'d-flex justify-content-center'}> <Spinner animation="grow" /></div>}
             </SimpleGrid>
+            {isFetching && <Loading/>}
     	</div>
     );
 }
