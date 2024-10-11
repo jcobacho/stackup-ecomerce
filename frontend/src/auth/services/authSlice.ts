@@ -101,19 +101,7 @@ const authSlice = createSlice({
                             	
             	return state;
         	},
-    	)
-		// builder.addMatcher(
-        // 	authApi.endpoints.refresh.matchFulfilled,
-        // 	(state, { payload }) => {
-		// 		state.access = payload.access;
-        //     	state.refresh = payload.refresh;
-		// 		sessionStorage.setItem("isAuthenticated", "true");
-        //         sessionStorage.setItem("user", `${JSON.stringify(state)}`);
-                            	
-        //     	return state;
-        // 	},
-    	// )
-		;       	
+    	);       	
 	},
 });
 
