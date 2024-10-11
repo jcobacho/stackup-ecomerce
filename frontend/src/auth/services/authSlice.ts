@@ -3,7 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
 	UserResponse,
 	LoginRequest,
-	AuthState
+	AuthState,
+	TokenResponse,
+	RefreshRequest
 } from "./types";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { toCamelResponseHandler } from "../../core/utils";
@@ -29,7 +31,7 @@ export const authApi = createApi({
                 body: credentials,
 			}),			
         }),
-        refresh: builder.mutation<UserResponse, LoginRequest>({
+        refresh: builder.mutation<TokenResponse, RefreshRequest>({
             query: (credentials) => ({
                 url: "/token/refresh",
                 method: "POST",
@@ -63,6 +65,13 @@ const authSlice = createSlice({
 			}
 			return state;
 		},
+		refreshTokens: (state, action) => {
+			state.access = action.payload.access;
+            state.refresh = action.payload.refresh;
+			sessionStorage.setItem("isAuthenticated", "true");
+            sessionStorage.setItem("user", `${JSON.stringify(state)}`);
+			return state;
+		},
 		updateAuthenticatedUser: (state, action) => {
 
 			state.user = action.payload;
@@ -70,6 +79,7 @@ const authSlice = createSlice({
 			return state
 
 		},
+		
 		logout: (state) => {
 			state.access = null;
 			state.user = null;
@@ -91,15 +101,28 @@ const authSlice = createSlice({
                             	
             	return state;
         	},
-    	);    	
+    	)
+		// builder.addMatcher(
+        // 	authApi.endpoints.refresh.matchFulfilled,
+        // 	(state, { payload }) => {
+		// 		state.access = payload.access;
+        //     	state.refresh = payload.refresh;
+		// 		sessionStorage.setItem("isAuthenticated", "true");
+        //         sessionStorage.setItem("user", `${JSON.stringify(state)}`);
+                            	
+        //     	return state;
+        // 	},
+    	// )
+		;       	
 	},
 });
 
 
 export default authSlice.reducer;
-export const { refreshAuthentication, logout, updateAuthenticatedUser } = authSlice.actions;
+export const { refreshAuthentication, refreshTokens, logout, updateAuthenticatedUser } = authSlice.actions;
 
 // Exporting the generated methods from createApi
 export const {
-	useLoginMutation
+	useLoginMutation,
+	useRefreshMutation
 } = authApi;

@@ -1,5 +1,6 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithReauth } from "../../core/services/coreSlice";
 
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
@@ -10,27 +11,7 @@ import { AllUsersResponse, UserCreateRequest, UserModel, UserUpdateRequest } fro
 // Define our service using a base URL and expected endpoints
 export const userApi = createApi({
 	reducerPath: "userApi",
-	// Change `localhost` to a forwarded address if using a cloud
-	// environment
-	baseQuery: fetchBaseQuery({
-    	// Replace your address here if needed i.e. your forwarded address from a cloud environment
-    	baseUrl: "http://localhost:8000/api",
-		prepareHeaders: (headers, { getState, endpoint }) => {
-        	const token = (getState() as RootState).auth.access;
-        	// Some of the endpoints don't require logins
-        	if (
-            	token 
-                // &&
-            	// endpoint !== "posts/all" &&
-            	// !endpoint.startsWith("posts/user")
-        	) {
-            	headers.set("Authorization", `Bearer ${token}`);
-        	}
-        	return headers;
-    	},
-    	credentials: "include",
-		responseHandler: toCamelResponseHandler
-	}),
+	baseQuery: baseQueryWithReauth,
 	refetchOnFocus: true,
 	refetchOnReconnect: true,
 	tagTypes: ["User"],
@@ -99,9 +80,6 @@ export const userApi = createApi({
 			invalidatesTags: (result, error, id) => {
 				return [{ type: 'User', id }]
 			},
-			// transformErrorResponse(response, _meta, _arg) {
-			// 	return response.data as ErrorResponse;
-			// },
 			
 		}),
 

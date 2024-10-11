@@ -24,3 +24,8 @@ export interface UserResponse {
 	user: User;
 }
 
+export interface TokenResponse {
+	access: string;
+	refresh: string;	
+}
+

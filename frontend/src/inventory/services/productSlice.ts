@@ -6,6 +6,7 @@ import type {
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 import { ErrorResponse } from "../../core/services/error-types";
+import { baseQueryWithReauth } from "../../core/services/coreSlice";
 // import type { ErrorResponse } from "../error-types";
 
 // Define our service using a base URL and expected endpoints
@@ -13,25 +14,27 @@ export const productApi = createApi({
 	reducerPath: "productApi",
 	// Change `localhost` to a forwarded address if using a cloud
 	// environment
-	baseQuery: fetchBaseQuery({
-    	// Replace your address here if needed i.e. your forwarded address from a cloud environment
-    	baseUrl: "http://localhost:8000/api",
-        prepareHeaders: (headers, { getState, endpoint }) => {
-        	const token = (getState() as RootState).auth.access;
-        	// Some of the endpoints don't require logins
-        	if (
-            	token 
-                // &&
-            	// endpoint !== "posts/all" &&
-            	// !endpoint.startsWith("posts/user")
-        	) {
-            	headers.set("Authorization", `Bearer ${token}`);
-        	}
-        	return headers;
-    	},
-    	credentials: "include",
-	}),
-	tagTypes: ["ProductModel"],
+	// baseQuery: fetchBaseQuery({
+    // 	// Replace your address here if needed i.e. your forwarded address from a cloud environment
+    // 	baseUrl: "http://localhost:8000/api",
+    //     prepareHeaders: (headers, { getState, endpoint }) => {
+    //     	const token = (getState() as RootState).auth.access;
+    //     	// Some of the endpoints don't require logins
+    //     	if (
+    //         	token 
+    //             // &&
+    //         	// endpoint !== "posts/all" &&
+    //         	// !endpoint.startsWith("posts/user")
+    //     	) {
+    //         	headers.set("Authorization", `Bearer ${token}`);
+    //     	}
+    //     	return headers;
+    // 	},
+    // 	credentials: "include",
+	// }),
+    baseQuery: baseQueryWithReauth,
+
+	// tagTypes: ["ProductModel"],
 	endpoints: (builder) => {
     	return {
         	getAllProducts: builder.query<AllProductResponse, number>({
@@ -57,7 +60,7 @@ export const productApi = createApi({
                 forceRefetch({ currentArg, previousArg }) {
                     return currentArg !== previousArg;
                 },
-            	providesTags: ["ProductModel"],
+            	// providesTags: ["ProductModel"],
         	}),
         	// getBlogPostsByUsername: builder.query<BlogModel[], string>({
             // 	query: (user) => `posts/user/${user}`,
