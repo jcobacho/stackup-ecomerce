@@ -38,8 +38,8 @@ export const userApi = createApi({
 				},
 			}),
 			invalidatesTags: (result, error) => {
-				return [{ type: 'User', id: result?.id }]
-			  },
+				return result?.id ? [{ type: 'User', id: result.id }] : []
+			},
 		}),
 		updateUser: builder.mutation<UserModel, UserUpdateRequest>({
 			query: ({id, ...body}) => ({
@@ -49,7 +49,7 @@ export const userApi = createApi({
 				body: recursiveToSnake(body),
 			}),
 			invalidatesTags: (result, error, { id }) => {
-				return [{ type: 'User', id }]
+				return [{ type: 'User', id: id }]
 			  },
 			// transformErrorResponse(response, _meta, _arg) {
 			// 	return response.data as ErrorResponse;
@@ -66,7 +66,7 @@ export const userApi = createApi({
 			  body: recursiveToSnake(patch)			  
 			}),
 			invalidatesTags: (result, error, { id }) => {
-				return [{ type: 'User', id }]
+				return [{ type: 'User',  id: id }]
 			},
 		}),
 		deleteUser: builder.mutation<void, number>({
@@ -78,7 +78,7 @@ export const userApi = createApi({
 				
 			}),
 			invalidatesTags: (result, error, id) => {
-				return [{ type: 'User', id }]
+				return [{ type: 'User', id: id }]
 			},
 			
 		}),

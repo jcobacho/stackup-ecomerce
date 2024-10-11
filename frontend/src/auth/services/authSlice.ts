@@ -67,7 +67,6 @@ const authSlice = createSlice({
 		},
 		refreshTokens: (state, action) => {
 			state.access = action.payload.access;
-            state.refresh = action.payload.refresh;
 			sessionStorage.setItem("isAuthenticated", "true");
             sessionStorage.setItem("user", `${JSON.stringify(state)}`);
 			return state;

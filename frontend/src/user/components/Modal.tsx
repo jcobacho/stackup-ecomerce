@@ -27,6 +27,8 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
     const authState = useAppSelector((state) => state.auth);
    
     const [userFormData, setUserFormData] = useState<UserUpdateRequest | UserCreateRequest>(record);
+    const [userFormErrors, setUserFormErrors] = useState({});
+
     const dispatch = useAppDispatch()
 
     
@@ -38,6 +40,11 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
       setUserFormData(record)
 
     }, [setUserFormData, record])
+
+    function HandleOnCloseForm(){
+      setUserFormErrors({})
+      onClose()
+    }
 
     async function handleFormSubmit(e){
         // const form = e.target
@@ -61,11 +68,13 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
                 dispatch(updateAuthenticatedUser(data))
               }
 
-              onClose()
+              HandleOnCloseForm()
             }
 
             if(error){
-                alert(error.data?.detail)
+                console.log("error")
+                console.log(error)
+                setUserFormErrors(error?.data ?? {})
             }     
             
         } catch (err) {
@@ -78,7 +87,7 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
 
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={() => HandleOnCloseForm()}
         >
           <ModalOverlay />
 
@@ -89,14 +98,14 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
             <ModalCloseButton />
             <ModalBody pb={6}>
 
-                  <UserForm userFormData={userFormData} setUserFormData={setUserFormData}/>
+                  <UserForm userFormData={userFormData} setUserFormData={setUserFormData} userFormErrors={userFormErrors}/>
             </ModalBody>
   
             <ModalFooter>
               <Button isLoading={isUpdating || isCreating} colorScheme='blue' mr={3} type={'submit'}>
                 Save
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={() => HandleOnCloseForm()}>Cancel</Button>
             </ModalFooter>
             </form>
 

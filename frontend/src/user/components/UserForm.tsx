@@ -1,15 +1,22 @@
-import { Box, Checkbox, Divider, FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
+import { Box, Checkbox, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack } from "@chakra-ui/react";
 
-function UserForm({userFormData, setUserFormData}) {
+function UserForm({userFormData, setUserFormData, userFormErrors}) {
 
     return ( 
 
         <>
-            <FormControl>
+            <FormControl isInvalid={Object.keys(userFormErrors).length > 0 ? true : false }>
               <FormLabel>Username</FormLabel>
               <Input name="username" placeholder='Username' onChange={(e) =>
                                 setUserFormData({ ...userFormData, username: e.target.value })} 
                                 value={userFormData.username}/>
+              {userFormErrors?.username ? (
+                  <FormErrorMessage>{userFormErrors?.username[0]}</FormErrorMessage>                
+              ) : (
+                <FormHelperText>
+                  Enter the username you'd like to login with.
+                </FormHelperText>
+              )}
             </FormControl>
   
               <FormControl mt={4}>
