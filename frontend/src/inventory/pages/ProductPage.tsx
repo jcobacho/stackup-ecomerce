@@ -2,7 +2,7 @@
 // import { useSearchParams } from "react-router-dom";
 
 import { useGetAllProductsQuery } from "../services/productSlice";
-import Product from "../components/product";
+import Product from "../components/Product";
 import { useEffect, useState } from "react";
 import { SimpleGrid } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
