@@ -14,19 +14,27 @@ from django.db.models import Model, QuerySet
 from typing import Any
 from authapi.schema import UserSchema, UserCreateSchema, UserUpdateSchema
 from ninja_jwt.authentication import JWTAuth
+from ninja.errors import HttpError
 
 User = get_user_model()
 
 class UserModelService(ModelService):
     def create(self, schema, **kwargs: Any) -> Any:
 
+        if self.model._default_manager.filter(username=schema.username).exists():
+            raise HttpError(400, "Username already exists")
+
         password = schema.dict().pop('password', None)
         instance = super().create(schema, **kwargs)
         instance.set_password(password)
         instance.save()
+
         return instance
 
     def update(self, instance: Model, schema: PydanticModel, **kwargs: Any) -> Any:
+
+        if self.model._default_manager.filter(username=schema.username).exclude(id=instance.id).exists():
+            raise HttpError(400, "Username already exists")
 
         password = schema.dict().pop('password', None)
         instance = super().update(instance, schema, **kwargs)

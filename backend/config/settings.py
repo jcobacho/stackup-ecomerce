@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta # import this library top of the settings.py file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,12 +41,16 @@ INSTALLED_APPS = [
 
     # 3rd party
     'corsheaders',
-    'ninja_extra',
+    # 'ninja_extra',
+    'rest_framework',
+    'rest_framework_simplejwt',
+
 
 
     # my apps
-    'authapi',
+    'core',
     'api',
+    'authapi',
     'inventory'
 ]
 
@@ -143,9 +148,31 @@ AUTH_USER_MODEL = "authapi.User"
 NINJA_JWT = {
 'TOKEN_OBTAIN_PAIR_INPUT_SCHEMA': "authapi.schema.MyTokenObtainPairInputSchema"
 }
+
+REST_FRAMEWORK = { 
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
+
+SIMPLE_JWT = {
+    
+    "TOKEN_OBTAIN_SERIALIZER": "authapi.api.serializers.MyTokenObtainPairSerializer",
+
+}
+
 #CORS
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+APPEND_SLASH=False

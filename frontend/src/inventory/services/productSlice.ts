@@ -39,7 +39,7 @@ export const productApi = createApi({
     	return {
         	getAllProducts: builder.query<AllProductResponse, number>({
             	query: (page) => ({
-                	url: `/products?page=${page}`,
+                	url: `/products/?page=${page}`,
             	}),
             	serializeQueryArgs: ({ endpointName }) => {
                     

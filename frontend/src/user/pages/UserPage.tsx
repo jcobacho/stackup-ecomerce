@@ -45,7 +45,6 @@ function UserPage() {
     const [selectedRecord, setSelectedRecord] = useState({
         username: "",
         firstName: "",
-        password: "",
         isShopper: false,
         isSeller: false,
         isStaff: false
@@ -66,7 +65,6 @@ function UserPage() {
         setSelectedRecord({
             username: "",
             firstName: "",
-            password: "",
             isShopper: false,
             isSeller: false,
             isStaff: false

@@ -21,7 +21,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     image_url = models.TextField(null=True, blank=True, verbose_name=_("Image"))
 
-    price = models.DecimalField(null=True, blank=True, verbose_name=_("Price"), decimal_places=2, max_digits=8)
+    price = models.FloatField(null=True, blank=True, verbose_name=_("Price"))
     class Meta:
         verbose_name = _("Product")
        

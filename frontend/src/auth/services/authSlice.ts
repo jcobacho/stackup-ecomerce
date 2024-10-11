@@ -18,7 +18,7 @@ export const authApi = createApi({
 	// environment
 	baseQuery: fetchBaseQuery({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
-    	baseUrl: "http://localhost:8000/api",
+    	baseUrl: "http://localhost:8000/api/",
     	credentials: "include",
 		responseHandler: toCamelResponseHandler
 	}),
@@ -26,14 +26,14 @@ export const authApi = createApi({
 	endpoints: (builder) => ({
         login: builder.mutation<UserResponse, LoginRequest>({
             query: (credentials) => ({
-                url: "/token/pair",
+                url: "token/",
                 method: "POST",
                 body: credentials,
 			}),			
         }),
         refresh: builder.mutation<TokenResponse, RefreshRequest>({
             query: (credentials) => ({
-                url: "/token/refresh",
+                url: "token/refresh/",
                 method: "POST",
                 body: credentials,
             }),

@@ -43,7 +43,7 @@ export const userApi = createApi({
 		}),
 		updateUser: builder.mutation<UserModel, UserUpdateRequest>({
 			query: ({id, ...body}) => ({
-				url: `users/${id}`,
+				url: `users/${id}/`,
 				method: "PUT",
 				credentials: "include",
 				body: recursiveToSnake(body),
@@ -57,7 +57,7 @@ export const userApi = createApi({
 		}),
 		updateUserPermission: builder.mutation({
 			query: ({id, ...patch}) => ({
-			  url: `users/${id}`,
+			  url: `users/${id}/`,
 			  // When performing a mutation, you typically use a method of
 			  // PATCH/PUT/POST/DELETE for REST endpoints
 			  method: 'PATCH',
@@ -71,7 +71,7 @@ export const userApi = createApi({
 		}),
 		deleteUser: builder.mutation<void, number>({
 			query: (id) => ({
-				url: `users/${id}`,
+				url: `users/${id}/`,
 				method: "DELETE",
 				credentials: "include",
 				body: {}
