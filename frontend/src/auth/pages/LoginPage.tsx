@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { AuthState, LoginRequest } from '../services/types';
 import { useLoginMutation } from '../services/authSlice'
 import { useNavigate } from 'react-router';
+import PasswordInput from '../../core/components/PasswordInput';
 
 export default function LoginPage() {
 
@@ -64,7 +65,7 @@ export default function LoginPage() {
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}>
-          <Stack spacing={4}>
+          <Stack spacing={10}>
             <form onSubmit={onSubmit}>
 
               <FormControl id="email">
@@ -76,10 +77,7 @@ export default function LoginPage() {
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
-                <Input type="password" value={loginFormData.password}
-                            onChange={(e) =>
-                                setLoginFormData({ ...loginFormData, password: e.target.value })
-                            }/>
+                <PasswordInput formData={loginFormData} setFormData={setLoginFormData}/>
               </FormControl>
               <Stack spacing={10}>
                 <Stack
