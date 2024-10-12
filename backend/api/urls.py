@@ -15,6 +15,6 @@ from django.urls import include, path
 urlpatterns = [
     path('users/', include("authapi.api.urls")),
     path('products/', include("inventory.api.urls")),
-    
+    path('orders/', include("sales.api.urls")),   
 
 ]

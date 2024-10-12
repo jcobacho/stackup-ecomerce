@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'core',
     'api',
     'authapi',
-    'inventory'
+    'inventory',
+    'sales'
 ]
 
 MIDDLEWARE = [
