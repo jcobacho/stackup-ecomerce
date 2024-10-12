@@ -3,18 +3,19 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from authapi.api.serializers import UserSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters
 
 User = get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'first_name']
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        print("repr(serializer)")
-        print(repr(serializer))
         serializer.is_valid(raise_exception=True)
 
         password = serializer.validated_data.pop('password', None)
