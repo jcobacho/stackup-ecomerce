@@ -48,18 +48,7 @@ function UserList({records, isLoading, handleEditButton}) {
                 
                 </Table>
             </TableContainer>}
-            <Flex minWidth='max-content' alignItems='center' gap='2'>
-                <Box p='2'>
-                    <Spacer />
-
-                </Box>
-                <Spacer />
-                <ButtonGroup gap='2'>
-                    <Button colorScheme='teal'>Prev</Button>
-                    <Input value="1" />
-                    <Button colorScheme='teal'>Next</Button>
-                </ButtonGroup>
-            </Flex>
+            
             </>
      );
 }

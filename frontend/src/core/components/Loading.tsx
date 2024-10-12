@@ -2,7 +2,7 @@ import { Center, Spinner } from "@chakra-ui/react";
 
 function Loading() {
     return ( 
-        <Center style={{ marginTop: "30vh" }}> <Spinner /></Center>
+        <Center style={{ marginTop: "25px" }}> <Spinner /></Center>
      );
 }
 

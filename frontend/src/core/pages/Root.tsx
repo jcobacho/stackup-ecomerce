@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import { Outlet } from "react-router-dom";
 import ScrollToTop from 'react-scroll-to-top';
-import { useDisclosure } from '@chakra-ui/react';
+import { Box, useDisclosure } from '@chakra-ui/react';
 import Sidebar from '../components/Sidebar';
 
 function Root() {
@@ -12,7 +12,10 @@ function Root() {
         <div className="App">
             <Header openDrawer={onOpen}/>
             <main>
-                <Outlet />
+
+                <Box ml={'15rem'} mr={'15rem'}>
+                    <Outlet />
+                </Box>
                 <ScrollToTop/>
             </main>
             <Sidebar isOpen={isOpen} onClose={onClose}/>

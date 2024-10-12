@@ -5,7 +5,7 @@ import { baseQueryWithReauth } from "../../core/services/coreSlice";
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
 import { RootState } from "../../store";
-import { AllUsersResponse, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
+import { AllUsersResponse, SearchRequest, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
 
 
 // Define our service using a base URL and expected endpoints
@@ -16,8 +16,11 @@ export const userApi = createApi({
 	refetchOnReconnect: true,
 	tagTypes: ["User"],
 	endpoints: (builder) => ({
-        getAllUsers: builder.query<AllUsersResponse, void>({
-			query: () => "users/",
+        getAllUsers: builder.query<AllUsersResponse, SearchRequest>({
+			query: (q) => ({
+				url: 'users/',
+				params: q
+			}),
 			providesTags: (data) =>
 				data
 				? [
@@ -25,6 +28,7 @@ export const userApi = createApi({
 					{ type: 'User', id: 'LIST' },
 					]
 				: [{ type: 'User', id: 'LIST' }]
+			
 		}),
 
 		createUser: builder.mutation<UserModel, UserCreateRequest>({
