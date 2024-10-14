@@ -1,9 +1,9 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
-} from '@reduxjs/toolkit/query'
+} from '@reduxjs/toolkit/query/react'
 import { refreshTokens, logout } from '../../auth/services/authSlice'
 import { RootState } from '../../store'
 import { toCamelResponseHandler } from '../utils'
@@ -54,4 +54,11 @@ const baseQueryWithReauth: BaseQueryFn<
   return result
 }
 
-export {baseQuery, baseQueryWithReauth}
+const coreApi = createApi({
+  reducerPath: 'coreApi',
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ['User'],
+  endpoints: () => ({}),
+})
+
+export { baseQuery, baseQueryWithReauth, coreApi}

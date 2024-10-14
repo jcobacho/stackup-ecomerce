@@ -1,17 +1,13 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
     AllProductResponse,
 	ProductModel
 } from "./types";
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../store";
-import { ErrorResponse } from "../../core/services/error-types";
-import { baseQueryWithReauth } from "../../core/services/coreSlice";
-// import type { ErrorResponse } from "../error-types";
 
+// import type { ErrorResponse } from "../error-types";
+import { coreApi } from "../../core/services/coreSlice";
 // Define our service using a base URL and expected endpoints
-export const productApi = createApi({
-	reducerPath: "productApi",
+export const productApi = coreApi.injectEndpoints({
+	// reducerPath: "productApi",
 	// Change `localhost` to a forwarded address if using a cloud
 	// environment
 	// baseQuery: fetchBaseQuery({
@@ -32,7 +28,7 @@ export const productApi = createApi({
     // 	},
     // 	credentials: "include",
 	// }),
-    baseQuery: baseQueryWithReauth,
+    // baseQuery: baseQueryWithReauth,
 
 	// tagTypes: ["ProductModel"],
 	endpoints: (builder) => {

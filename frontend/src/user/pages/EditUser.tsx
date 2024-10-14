@@ -96,7 +96,7 @@ function EditUser() {
                             }} isLoading={isUpdating} colorScheme='blue' mr={3} type={'submit'}>
                             Save
                             </Button>
-                            <Button as={ReactRouterLink} to={'/users'}>Cancel</Button>
+                            <Button as={ReactRouterLink} to={-1 as any}>Cancel</Button>
                         </Flex>                    
                     </VStack>
                 </form>

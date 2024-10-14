@@ -1,37 +1,46 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseQueryWithReauth } from "../../core/services/coreSlice";
-
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
 import { RootState } from "../../store";
 import { AllUsersResponse, SearchRequest, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
-
+import { coreApi } from "../../core/services/coreSlice";
 
 // Define our service using a base URL and expected endpoints
-export const userApi = createApi({
-	reducerPath: "userApi",
-	baseQuery: baseQueryWithReauth,
-	refetchOnFocus: true,
-	refetchOnReconnect: true,
-	tagTypes: ["User"],
-	endpoints: (builder) => ({
-        getAllUsers: builder.query<AllUsersResponse, SearchRequest>({
+export const userApi = coreApi.injectEndpoints({
+	// reducerPath: "userApi",
+	// baseQuery: baseQueryWithReauth,
+	// refetchOnFocus: true,
+	// refetchOnReconnect: true,
+	// tagTypes: ["User"],
+	endpoints: (build) => ({
+        getAllUsers: build.query<AllUsersResponse, SearchRequest>({
 			query: (q) => ({
 				url: 'users/',
 				params: q
 			}),
-			providesTags: ["User"]	
+			// forceRefetch({ currentArg, previousArg }) {
+			// 	console.log("force refetch")
+			// 	console.log(currentArg)
+			// 	console.log(previousArg)
+			// 	return currentArg !== previousArg;
+			// },
+			// providesTags: ["User"]	
+			providesTags: (data) =>
+				data?.results
+				? [
+					...data.results.map(({ id }) => ({ type: 'User' as const, id })),
+					{ type: 'User', id: 'LIST' },
+					]
+				: [{ type: 'User', id: 'LIST' }],
 				
 		}),
-		getUserById: builder.query<UserModel, number>({
+		getUserById: build.query<UserModel, number>({
 			query: (id) => ({
 				url: `users/${id}/`,
 			}),
-			providesTags: ["User"]	
+			providesTags: (result, error, id) => [{ type: 'User', id }],
 			
 		}),
-		createUser: builder.mutation<UserModel, UserCreateRequest>({
+		createUser: build.mutation<UserModel, UserCreateRequest>({
 			query: (body) => ({
 				url: "users/",
 				method: "POST",
@@ -39,18 +48,18 @@ export const userApi = createApi({
 				body: recursiveToSnake(body),
 				
 			}),
-			invalidatesTags: ["User"],
+			invalidatesTags: [{ type: 'User', id: 'LIST' }],
 		}),
-		updateUser: builder.mutation<UserModel, UserUpdateRequest>({
+		updateUser: build.mutation<UserModel, UserUpdateRequest>({
 			query: ({id, ...body}) => ({
 				url: `users/${id}/`,
 				method: "PUT",
 				credentials: "include",
 				body: recursiveToSnake(body),
 			}),
-			invalidatesTags: ["User"]
+			invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
 		}),
-		updateUserPermission: builder.mutation({
+		updateUserPermission: build.mutation({
 			query: ({id, ...patch}) => ({
 			  url: `users/${id}/`,
 			  // When performing a mutation, you typically use a method of
@@ -63,7 +72,7 @@ export const userApi = createApi({
 			invalidatesTags: ["User"]
 
 		}),
-		deleteUser: builder.mutation<void, number>({
+		deleteUser: build.mutation<void, number>({
 			query: (id) => ({
 				url: `users/${id}/`,
 				method: "DELETE",
@@ -71,7 +80,7 @@ export const userApi = createApi({
 				body: {}
 				
 			}),
-			invalidatesTags: ["User"]
+			invalidatesTags: (result, error, id) => [{ type: 'User', id: id }],
 
 			
 		}),
@@ -89,8 +98,8 @@ export const userApi = createApi({
 // 	reducers: {
 		
 // 	},
-// 	extraReducers(builder) {
-// 		builder.addMatcher(
+// 	extraReducers(build) {
+// 		build.addMatcher(
 //         	userApi.endpoints.updateUser.matchFulfilled,
 //         	(state, { payload }) => {
 				
@@ -100,7 +109,7 @@ export const userApi = createApi({
 		// 		return state;
         // 	},
     	// );  
-    	// builder.addMatcher(
+    	// build.addMatcher(
         // 	userApi.endpoints.updateUserPermission.matchFulfilled,
         // 	(state, { payload }) => {
 

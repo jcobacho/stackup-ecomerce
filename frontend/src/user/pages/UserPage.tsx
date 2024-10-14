@@ -28,7 +28,7 @@ function UserPage() {
 
     const debouncedSearch = useDebounce(search, 300)
 
-    const {data, isFetching} = useGetAllUsersQuery({search: debouncedSearch, page});
+    const {data, isLoading, isFetching} = useGetAllUsersQuery({search: debouncedSearch, page});
 
     const records = data?.results ?? []
     
