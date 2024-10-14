@@ -12,3 +12,6 @@ class User(AbstractUser):
     is_shopper = models.BooleanField(default=False)
 
     # objects = CustomUserManager()
+
+    class Meta:
+        ordering = ['username']
