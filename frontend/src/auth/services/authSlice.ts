@@ -7,7 +7,7 @@ import type {
 	TokenResponse,
 	RefreshRequest
 } from "./types";
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { toCamelResponseHandler } from "../../core/utils";
 
 

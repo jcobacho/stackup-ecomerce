@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { UserCreateRequest, UserUpdateRequest } from '../services/types';
-import { useCreateUserMutation, useUpdateUserMutation } from '../services/userSlice';
+import { useCreateUserMutation, useUpdateUserMutation, useLazyGetAllUsersQuery, selectAllUsers } from '../services/userSlice';
 import UserForm from './Form'
 import { updateAuthenticatedUser } from '../../auth/services/authSlice';
 
@@ -30,7 +30,6 @@ export default function UserModal({ isOpen, onOpen, onClose, record }) {
     const [userFormErrors, setUserFormErrors] = useState({});
 
     const dispatch = useAppDispatch()
-
     
     // const initialRef = React.useRef(null)
     // const finalRef = React.useRef(null)

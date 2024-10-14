@@ -6,14 +6,11 @@ import UserRow from "./UserRow";
 import { useGetAllUsersQuery } from '../services/userSlice';
 import Loading from "../../core/components/Loading";
 
-function UserList({records, isLoading, handleEditButton}) {
+function UserList({records, isLoading}) {
 
     const [toDelete, setToDelete] = useState(0)
 
     const  { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete }= useDisclosure()
-
-    if(isLoading)
-        return  <Loading/>
 
     return ( 
 <>
@@ -34,11 +31,11 @@ function UserList({records, isLoading, handleEditButton}) {
                     </Thead>
                     <Tbody>
 
-                        {records.map((record: UserModel) => (
+                        {!isLoading && records.map((record: UserModel) => (
                             
-                            <UserRow key={record.id} record={record} handleEditButton={handleEditButton} setToDelete={setToDelete} onOpenDelete={onOpenDelete}/>
+                            <UserRow key={record.id} record={record} setToDelete={setToDelete} onOpenDelete={onOpenDelete}/>
                         ))}
-
+                       
                     
                     </Tbody>
                     <tfoot>
@@ -48,6 +45,8 @@ function UserList({records, isLoading, handleEditButton}) {
                 
                 </Table>
             </TableContainer>}
+
+            {isLoading && <Loading/>}
             
             </>
      );

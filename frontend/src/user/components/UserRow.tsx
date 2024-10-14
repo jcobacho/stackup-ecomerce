@@ -1,8 +1,11 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Button, Checkbox, Stack, Td, Tr } from "@chakra-ui/react";
 import * as React from "react";
+import { Link as ReactRouterLink } from 'react-router-dom'
 
-const UserRow = React.memo(function UserRow({record, handleEditButton, setToDelete, onOpenDelete}) {
+const UserRow = React.memo(function UserRow({record, setToDelete, onOpenDelete}) {
+   
+
     return ( 
 
         <Tr data-id={record.id}>
@@ -23,10 +26,10 @@ const UserRow = React.memo(function UserRow({record, handleEditButton, setToDele
             </Td>
             <Td>
                 <Stack direction='row' spacing={4}>
-                    <Button leftIcon={<EditIcon />} colorScheme='teal' variant='solid' onClick={(e) => handleEditButton(e, record)}>
+                    <Button as={ReactRouterLink} leftIcon={<EditIcon />} colorScheme='teal' variant='solid' to={`/users/${record.id}/edit`} >
                         Edit
                     </Button>
-                    <Button leftIcon={<DeleteIcon />} colorScheme='red' variant='outline' onClick={(e) => {setToDelete(record.id); onOpenDelete()}}>
+                    <Button leftIcon={<DeleteIcon />} colorScheme='red' variant='outline' onClick={(e) => {e.preventDefault(); setToDelete(record.id); onOpenDelete()}}>
                         Delete
                     </Button>
                     

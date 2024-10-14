@@ -21,29 +21,25 @@ export const userApi = createApi({
 				url: 'users/',
 				params: q
 			}),
-			providesTags: (data) =>
-				data
-				? [
-					...data.results.map(({ id }) => ({ type: 'User' as const, id })),
-					{ type: 'User', id: 'LIST' },
-					]
-				: [{ type: 'User', id: 'LIST' }]
+			providesTags: ["User"]	
+				
+		}),
+		getUserById: builder.query<UserModel, number>({
+			query: (id) => ({
+				url: `users/${id}/`,
+			}),
+			providesTags: ["User"]	
 			
 		}),
-
 		createUser: builder.mutation<UserModel, UserCreateRequest>({
 			query: (body) => ({
 				url: "users/",
 				method: "POST",
 				credentials: "include",
 				body: recursiveToSnake(body),
-				validateStatus(response) {
-					return response.ok === true;
-				},
+				
 			}),
-			invalidatesTags: (result, error) => {
-				return result?.id ? [{ type: 'User', id: result.id }] : []
-			},
+			invalidatesTags: ["User"],
 		}),
 		updateUser: builder.mutation<UserModel, UserUpdateRequest>({
 			query: ({id, ...body}) => ({
@@ -52,12 +48,7 @@ export const userApi = createApi({
 				credentials: "include",
 				body: recursiveToSnake(body),
 			}),
-			invalidatesTags: (result, error, { id }) => {
-				return [{ type: 'User', id: id }]
-			  },
-			// transformErrorResponse(response, _meta, _arg) {
-			// 	return response.data as ErrorResponse;
-			// },
+			invalidatesTags: ["User"]
 		}),
 		updateUserPermission: builder.mutation({
 			query: ({id, ...patch}) => ({
@@ -69,9 +60,8 @@ export const userApi = createApi({
 			  // the Headers and calls `JSON.stringify(patch)`
 			  body: recursiveToSnake(patch)			  
 			}),
-			invalidatesTags: (result, error, { id }) => {
-				return [{ type: 'User',  id: id }]
-			},
+			invalidatesTags: ["User"]
+
 		}),
 		deleteUser: builder.mutation<void, number>({
 			query: (id) => ({
@@ -81,9 +71,8 @@ export const userApi = createApi({
 				body: {}
 				
 			}),
-			invalidatesTags: (result, error, id) => {
-				return [{ type: 'User', id: id }]
-			},
+			invalidatesTags: ["User"]
+
 			
 		}),
 
@@ -130,12 +119,15 @@ export const userApi = createApi({
 // Exporting the generated methods from createApi
 export const {
 	useGetAllUsersQuery,
+	useLazyGetAllUsersQuery,
+	useGetUserByIdQuery,
 	useCreateUserMutation,
 	useUpdateUserMutation,
 	useUpdateUserPermissionMutation,
 	useDeleteUserMutation,
 } = userApi;
 
+export const selectAllUsers = (state) => userApi.endpoints.getAllUsers.select()(state).data
 // export const {
 // 	// selectById: selectUserById,
 // 	// selectIds: selectUserIds,

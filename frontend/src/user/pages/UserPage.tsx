@@ -14,11 +14,12 @@ import {
     VStack
   } from '@chakra-ui/react'
 import { useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
 import UserList from '../components/List';
-import UserModal from '../components/Modal';
 import { useGetAllUsersQuery } from '../services/userSlice';
 import { useDebounce } from '../../core/hooks/useDebounce';
+import SearchUser from '../components/Search';
+import { Link as ReactRouterLink } from 'react-router-dom'
+
 
 function UserPage() {
 
@@ -31,40 +32,9 @@ function UserPage() {
 
     const records = data?.results ?? []
     
-    const  { isOpen, onOpen, onClose }= useDisclosure()
-    const [selectedRecord, setSelectedRecord] = useState({
-        username: "",
-        firstName: "",
-        isShopper: false,
-        isSeller: false,
-        isStaff: false
-    })    
-
-    function handleEditButton(e, record){
-
-        setSelectedRecord(record)
-        onOpen()
-
-    }
-
-    function handleCreateButton(e){
-
-        setSelectedRecord({
-            username: "",
-            firstName: "",
-            isShopper: false,
-            isSeller: false,
-            isStaff: false
-        })
-        onOpen()
-
-    }
-
     return ( 
 
         <>
-
-            <UserModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} record={selectedRecord}/>
 
             <VStack   
 
@@ -73,22 +43,17 @@ function UserPage() {
                 spacing={4}
                 align='stretch'
                 >
-                <Box h={'15px'}>
-
-                </Box>
+                <Box h={'15px'}></Box>
                 <Box w={"100%"} display='flex' >
                     <Box>
-                        <Button onClick={handleCreateButton}>Create</Button>
+                        <Button as={ReactRouterLink} to={'/users/create'}>Create</Button>
                     </Box>
                     <Spacer />
-                    <Box>
-                        <InputGroup size='sm'>
-                            <Input placeholder='mysite' value={search} onChange={(e) => {setSearch(e.currentTarget.value); setPage(1)}}/>
-                        <InputRightAddon><FiSearch/></InputRightAddon></InputGroup>
-                    </Box>
+                    <SearchUser search={search} setSearch={setSearch} setPage={setPage}/>
+                    
                 </Box>
                 <Box w={"100%"} >
-                    <UserList records={records} isLoading={isFetching} handleEditButton={handleEditButton}/>
+                    <UserList records={records} isLoading={isFetching}/>
                 </Box>
                 <Box>
                     <Flex minWidth='max-content' alignItems='center' gap='2'>

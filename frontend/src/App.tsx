@@ -12,6 +12,8 @@ import Root from './core/pages/Root'
 import { refreshAuthentication } from './auth/services/authSlice'
 import UserPage from './user/pages/UserPage'
 import AccessDenied from './core/pages/403'
+import CreateUser from './user/pages/CreateUser';
+import EditUser from './user/pages/EditUser';
 
 function App() {
 
@@ -40,11 +42,29 @@ function App() {
                 path: "/products",
                 element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
 
-            },            
+            },  
+            {
+                path: "/users/create",
+                element: authState?.user ? authState.user?.isStaff ? <CreateUser  />: <AccessDenied/> :<Navigate to='/login'/>,
+            },           
             {
                 path: "/users",
                 element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
-            },            
+                // children: [
+                //     {
+                //         path: "/users/list",
+                //         element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                //     }, 
+                    
+                // ]
+            },     
+            {
+                path: "users/:id/edit",
+                element: authState?.user ? authState.user?.isStaff ? <EditUser  />: <AccessDenied/> :<Navigate to='/login'/>,
+                loader: async ({ params }) => {
+                    return params.id;
+                },
+            },       
         ],
     },
     {

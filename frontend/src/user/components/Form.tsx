@@ -9,7 +9,7 @@ function UserForm({userFormData, setUserFormData, userFormErrors}) {
               <FormLabel>Username</FormLabel>
               <Input name="username" placeholder='Username' onChange={(e) =>
                                 setUserFormData({ ...userFormData, username: e.target.value })} 
-                                value={userFormData.username}/>
+                                value={userFormData?.username}/>
               {userFormErrors?.username ? (
                   <FormErrorMessage>{userFormErrors?.username[0]}</FormErrorMessage>                
               ) : (
@@ -39,15 +39,15 @@ function UserForm({userFormData, setUserFormData, userFormErrors}) {
 
                 <Stack spacing={[1, 5]} direction={['column', 'row']}>
 
-                  <Checkbox size='lg' colorScheme='red' isChecked={userFormData.isStaff} value={'isStaff'} onChange={(e) =>
+                  <Checkbox size='lg' colorScheme='red' isChecked={userFormData?.isStaff} value={'isStaff'} onChange={(e) =>
                                 setUserFormData({ ...userFormData, isStaff: e.target.checked })}>
                       Is Admin?
                   </Checkbox>
-                  <Checkbox size='lg' colorScheme='green' isChecked={userFormData.isShopper} value={'isShopper'} onChange={(e) =>
+                  <Checkbox size='lg' colorScheme='green' isChecked={userFormData?.isShopper} value={'isShopper'} onChange={(e) =>
                                 setUserFormData({ ...userFormData, isShopper: e.target.checked })}>
                       Is Shopper?
                   </Checkbox>
-                  <Checkbox size='lg' colorScheme='orange' isChecked={userFormData.isSeller} value={'isSeller'} onChange={(e) =>
+                  <Checkbox size='lg' colorScheme='orange' isChecked={userFormData?.isSeller} value={'isSeller'} onChange={(e) =>
                                 setUserFormData({ ...userFormData, isSeller: e.target.checked })}>
                       Is Seller?
                   </Checkbox>
