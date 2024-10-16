@@ -3,15 +3,16 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { authApi } from "./auth/services/authSlice";
 import authReducer from "./auth/services/authSlice";
+import cartReducer from "./cart/services/cartSlice";
 import { coreApi } from "./core/services/coreSlice";
 // import userReducer from "./user/services/userSlice";
-
 
 const store = configureStore({
 	reducer: {
     	[coreApi.reducerPath]: coreApi.reducer,
     	[authApi.reducerPath]: authApi.reducer,
-		auth: authReducer
+		auth: authReducer,
+		cart: cartReducer
 
     },
 	middleware: (getDefaultMiddleware) => {
