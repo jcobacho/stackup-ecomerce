@@ -33,10 +33,13 @@ import {
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { logout } from '../../auth/services/authSlice';
-import store from "../../store";
+import store, { useAppSelector } from "../../store";
+import { totalQuantity } from '../../cart/services/cartSlice';
 
 export default function WithSubnavigation({openDrawer, isAuthenticated, authState}) {
   const { isOpen, onToggle } = useDisclosure()
+
+  const total = useAppSelector(totalQuantity) | 0;
 
   function hasPerms(perms:Array<string>=[]){
 
@@ -92,11 +95,28 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
           </Flex>
         </Flex>
 
+        {isAuthenticated && authState.user.isShopper &&
         <Flex flex={{ base: 1 }}>
             <Button onClick={openDrawer}>
                 <FiShoppingCart/>
+                <Center
+                  as="span"
+                  p=".6rem"
+                  position="absolute"
+                  width="1rem"
+                  height="1rem"
+                  bg="accent"
+                  fontSize="0.8125rem"
+                  borderRadius="50%"
+                  color="white"
+                  top="-0.375rem"
+                  right="-0.75rem"
+                  bgColor={'black'}
+                >
+                  {total}
+                </Center>
             </Button>
-        </Flex>
+        </Flex>}
 
         {!isAuthenticated?<Stack
           flex={{ base: 1, md: 0 }}
@@ -120,6 +140,7 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             Sign Up
           </Button>
         </Stack>:
+        
         <Menu>
           <MenuButton
             as={Button}
