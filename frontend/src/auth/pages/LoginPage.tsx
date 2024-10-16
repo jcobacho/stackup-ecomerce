@@ -9,12 +9,11 @@ import {
   Checkbox,
   Stack,
   Button,
-  Heading,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 import { useState } from 'react';
-import { AuthState, LoginRequest } from '../services/types';
+import { LoginRequest } from '../services/types';
 import { useLoginMutation } from '../services/authSlice'
 import { useNavigate } from 'react-router';
 import PasswordInput from '../../core/components/PasswordInput';
@@ -90,6 +89,7 @@ export default function LoginPage() {
                 <Button
                   bg={'blue.400'}
                   color={'white'}
+                  isLoading={isLoading}
                   _hover={{
                     bg: 'blue.500',
                   }}
