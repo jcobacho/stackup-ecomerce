@@ -44,7 +44,7 @@ class OrderItem(models.Model):
         verbose_name_plural = _("Order Items")
        
     def __str__(self) -> str:
-        return self.order.id + self.product.name    
+        return str(self.order.id) + self.short_name    
 
     @property
     def short_name(self)  -> str:
