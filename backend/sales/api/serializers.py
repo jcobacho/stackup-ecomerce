@@ -6,11 +6,24 @@ from typing import Dict, Any
 
 class OrderItemSerializer(serializers.ModelSerializer):
 
-    product = ProductSerializer()
+    # product = ProductSerializer()
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'price', 'qty', 'product']
+        fields = ['id', 'short_name', 'price', 'qty', 'product', 'image_url']
+
+
+class CartSerializer(serializers.ModelSerializer):
+
+    orderitems = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = ['id', 'orderitems', 'total_amount', 'total_quantity']
+
+    def get_orderitems(self, obj):
+        return OrderItemSerializer(OrderItem.objects.filter(order__pk=obj.pk), many=True).data
+
 
 class OrderSerializer(serializers.ModelSerializer):
 
@@ -20,7 +33,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'client','orderitems', 'paid']
+        fields = ['id', 'client', 'orderitems', 'paid']
 
     def get_orderitems(self, obj):
         return OrderItemSerializer(OrderItem.objects.filter(order__pk=obj.pk), many=True).data
