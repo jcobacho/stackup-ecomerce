@@ -114,7 +114,7 @@ function Product({record}) {
                 placement={'top'}
                 color={'gray.800'}
                 fontSize={'1.2em'}>
-                <Button as={'a'} bg={'transparent'} href={'#'} display={'flex'} isLoading={isLoading} onClick={() => {
+                <Button bg={'transparent'} type={'button'} display={'flex'} isLoading={isLoading} onClick={() => {
                     HandleAddToCart()
                 }}>
                   <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
