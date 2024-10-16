@@ -12,8 +12,7 @@ function Root() {
         <div className="App">
             <Header openDrawer={onOpen}/>
             <main>
-
-                <Box ml={'15rem'} mr={'15rem'}>
+                <Box ml={[2, 4, 6, 8]} mr={[2, 4, 6, 8]} >
                     <Outlet />
                 </Box>
                 <ScrollToTop/>
