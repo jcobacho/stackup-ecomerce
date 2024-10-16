@@ -1,12 +1,11 @@
 import { Box, Button, Heading, HStack, List, Text } from "@chakra-ui/react";
 import { useAppSelector } from "../../store";
-import { cartItems, totalAmount, totalQuantity } from "../services/cartSlice";
+import { cartItems, totalQuantity } from "../services/cartSlice";
 import CartItem from "./CartItem";
 
 function CartDrawer({onClose}) {
 
     const orderitems = useAppSelector(cartItems) ?? []
-    const amount = useAppSelector(totalAmount) ?? 0
     const totalQty = useAppSelector(totalQuantity) ?? 0
 
     return ( 
@@ -39,22 +38,7 @@ function CartDrawer({onClose}) {
                   ))}
                 </List>
               )}
-              <HStack justify="space-between" mb="1.5rem">
-                <Text textTransform="uppercase">Total</Text>
-                <Text fontSize=" 1.125rem" fontWeight="bold" color="black">
-                  $ {amount.toLocaleString('en-US')}
-                </Text>
-              </HStack>
-              {/* <Link href="/checkout" passHref> */}
-                <Button
-                  as="a"
-                  cursor="pointer"
-                  onClick={onClose}
-                  width="100%"
-                >
-                  Checkout
-                </Button>
-              {/* </Link> */}
+              
             </Box>
           ) : (
             <Box

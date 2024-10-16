@@ -6,33 +6,30 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
+    Button,
     
   } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 import CartDrawer from '../../cart/components/CartDrawer';
+import CartDrawerFooter from '../../cart/components/CartDrawerFooter';
 
 function Sidebar({ isOpen, onClose }) {
 
-    const amount = 432.00
-
-    const items = [
-      {id: 1, shortName: "Tesla v3", price: 2500.00, cartImage: '', quantity:1},
-      {id: 2, shortName: "Iphone 15", price: 785.00, cartImage: '', quantity:2},
-
-    ]
-
-
     return ( 
-        <Drawer onClose={onClose} isOpen={isOpen} size={'md'}>
+        <Drawer onClose={onClose} isOpen={isOpen} size={'sm'}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>{`My Cart`}</DrawerHeader>
           <DrawerBody>
 
-          <CartDrawer onClose={onClose}/>          
+            <CartDrawer onClose={onClose}/>          
             
           </DrawerBody>
+
+          <CartDrawerFooter/>
+
+
         </DrawerContent>
       </Drawer>
      );

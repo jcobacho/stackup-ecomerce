@@ -2,24 +2,24 @@ import { Flex, Button as ChakraButton, Center } from '@chakra-ui/react'
 
 const ProductQuantity = ({
   quantity,
-  // increment,
-  // decrement,
+  increment,
+  decrement,
   width,
   height,
 }: {
   quantity: number
-  // increment: () => void
-  // decrement: () => void
+  increment: () => void
+  decrement: () => void
   width: string
   height: string
 }): JSX.Element => {
   return (
-    <Flex bg="gray" alignItems="center" width={width} height={height}>
-      {/* <Button sign="-" handleClick={decrement} /> */}
+    <Flex bg="gray.100" alignItems="center" width={width} height={height} mt={'auto'}>
+      <Button sign="-" handleClick={decrement} />
       <Center fontSize="0.8125rem" fontWeight="bold" width="20%">
         {quantity}
       </Center>
-      {/* <Button sign="+" handleClick={increment} /> */}
+      <Button sign="+" handleClick={increment} />
     </Flex>
   )
 }
@@ -43,7 +43,7 @@ const Button = ({
       p="0"
       bg="transparent"
       _hover={{
-        bg: 'lightGray',
+        bg: 'gray.200',
         color: 'accent',
       }}
     >
