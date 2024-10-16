@@ -19,7 +19,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Name"))
     description = models.TextField(blank=True, verbose_name=_("Description"))
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
-    image_url = models.TextField(null=True, blank=True, verbose_name=_("Image"))
+    image_url = models.TextField(null=True, blank=True, verbose_name=_("Image Url"))
 
     price = models.FloatField(null=True, blank=True, verbose_name=_("Price"))
     class Meta:
