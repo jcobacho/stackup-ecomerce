@@ -9,7 +9,7 @@ interface CartItem {
 export default CartItem
 
 
-export type CartModal = {
+export type CartModel = {
     orderitems: CartItem[]
     totalQuantity: number
     totalAmount: number

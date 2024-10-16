@@ -5,14 +5,13 @@ import DeleteAlertDialog from "./DeleteAlertDialog";
 import UserRow from "./UserRow";
 import { useGetAllUsersQuery } from '../services/userSlice';
 import Loading from "../../core/components/Loading";
-import * as React from "react";
 
 function UserList({debouncedSearch, page}) {
 
     const [toDelete, setToDelete] = useState(0)
     const {data, isFetching} = useGetAllUsersQuery({search: debouncedSearch, page});
 
-    const  { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete }= useDisclosure()
+    const  { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
     const records = data?.results ?? []
 
     return ( 

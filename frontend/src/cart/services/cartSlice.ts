@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import CartItem, { CartModal } from './types'
+import CartItem, { CartModel } from './types'
 
 
 const initialCartState = {
@@ -59,7 +59,7 @@ export const cartApi = coreApi.injectEndpoints({
 	
 	endpoints: (builder) => {
     	return {
-        	getMyCart: builder.query<CartModal, void>({
+        	getMyCart: builder.query<CartModel, void>({
             	query: () => ({
                 	url: `/orders/cart/`,
             	}),            	
@@ -72,12 +72,12 @@ export const cartApi = coreApi.injectEndpoints({
 
 const cartSlice = createSlice({
 	name: "cart",
-	initialState: initialCartState as CartModal,
+	initialState: initialCartState as CartModel,
 	reducers: {
 		refreshCart: (state) => {
 			const cart = sessionStorage.getItem("cart");
 			if (cart) {
-				const response: CartModal = JSON.parse(
+				const response: CartModel = JSON.parse(
 					cart as string,
 				)
 				state.orderitems = response.orderitems;
@@ -86,10 +86,20 @@ const cartSlice = createSlice({
 			}
 			return state;
 		},
-		removeCart: (state: CartModal) => {
+		removeCart: (state: CartModel) => {
 			state = initialCartState;
 			sessionStorage.removeItem("cart");
 			
+			return state;
+		},
+		updateCartState: (state: CartModel, {payload}) => {
+
+			state.orderitems = payload.orderitems
+			state.totalAmount = payload.totalAmount;
+			state.totalQuantity = payload.totalQuantity;		
+			
+			sessionStorage.setItem("cart", `${JSON.stringify(payload)}`);			
+							
 			return state;
 		},
 	},
@@ -110,7 +120,7 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer
-export const { refreshCart, removeCart } = cartSlice.actions;
+export const { refreshCart, removeCart, updateCartState } = cartSlice.actions;
 
 export const cartItems = (state: RootState): CartItem[] => state.cart.orderitems
 export const totalAmount = (state: RootState): number => state.cart.totalAmount

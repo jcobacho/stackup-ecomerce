@@ -1,10 +1,12 @@
 import type {
+    AddToCartRequest,
     AllProductResponse,
 	ProductModel
 } from "./types";
 
 // import type { ErrorResponse } from "../error-types";
 import { coreApi } from "../../core/services/coreSlice";
+import { CartModal } from "../../cart/services/types";
 // Define our service using a base URL and expected endpoints
 export const productApi = coreApi.injectEndpoints({
 	
@@ -44,22 +46,14 @@ export const productApi = coreApi.injectEndpoints({
             // 	},
             // 	providesTags: ["BlogModel"],
         	// }),
-        	// createPost: builder.mutation<BlogResponse, BlogCreateRequest>({
-            // 	query: (body) => ({
-            //     	url: "posts/post/create",
-            //     	method: "POST",
-            //     	credentials: "include",
-            //     	body: body,
-            //     	validateStatus(response) {
-            //         	console.log(response);
-            //         	return response.ok === true;
-            //     	},
-            // 	}),
-            // 	invalidatesTags: ["BlogModel"],
-            // 	transformErrorResponse(response, _meta, _arg) {
-            //     	return response.data as ErrorResponse;
-            // 	},
-        	// }),
+        	addToCart: builder.mutation<CartModal, AddToCartRequest>({
+            	query: ({id, ...body}) => ({
+                	url: `/products/${id}/add_to_cart/`,
+                	method: "POST",
+                	credentials: "include",
+                	body: body,                	
+            	}),            	
+        	}),
         	// deletePost: builder.mutation<BlogResponse, BlogDeleteRequest>({
             // 	query: (body) => ({
             //     	url: "posts/post/delete",
@@ -91,6 +85,7 @@ export const productApi = coreApi.injectEndpoints({
 // Exporting the generated methods from createApi
 export const {
 	useGetAllProductsQuery,
+    useAddToCartMutation
 	// useLazyGetBlogPostsByUsernameQuery,
 	// useGetBlogPostsByUsernameQuery,
 	// useGetAllBlogPostsQuery,

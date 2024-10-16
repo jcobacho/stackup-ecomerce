@@ -10,11 +10,16 @@ import {
     Icon,
     chakra,
     Tooltip,
-    Link
+    Link,
+    Button
   } from '@chakra-ui/react'
   import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs'
   import { FiShoppingCart } from 'react-icons/fi'
-
+import { updateCartState } from '../../cart/services/cartSlice'
+import { useAppDispatch } from '../../store'
+import { useAddToCartMutation } from '../services/productSlice'
+import { AddToCartRequest } from '../services/types'
+import { CartModel } from '../../cart/services/types'
   interface RatingProps {
     rating: number
     numReviews: number
@@ -49,8 +54,27 @@ import {
   }
 
 function Product({record}) {
+
+    const [addToCart, {isLoading}] = useAddToCartMutation()
+    const dispatch = useAppDispatch()
+
+    async function HandleAddToCart(){
+
+      const {data, error} = await addToCart({ id: record.id, quantity: 1 } as AddToCartRequest)
+      if (data){
+        // raise toaster
+        // distpatch to update state
+        dispatch(updateCartState(data as CartModel))
+      }
+
+      if(error){
+        console.log("error?.data")
+        console.log(error?.data)
+      }
+
+    }
+
     return ( 
-        <Flex p={50} w="full" alignItems="center" justifyContent="center">
         <Box
           bg={useColorModeValue('white', 'gray.800')}
           maxW="sm"
@@ -62,7 +86,7 @@ function Product({record}) {
             <Circle size="10px" position="absolute" top={2} right={2} bg="red.200" />
           )} */}
   
-          <Image src={record.image_url} alt={`Picture of ${record.name}`} roundedTop="lg" />
+          <Image src={record.imageUrl} alt={`Picture of ${record.name}`} roundedTop="lg" />
   
           <Box p="6">
             <Box display="flex" alignItems="baseline">
@@ -90,9 +114,11 @@ function Product({record}) {
                 placement={'top'}
                 color={'gray.800'}
                 fontSize={'1.2em'}>
-                <chakra.a href={'#'} display={'flex'}>
+                <Button as={'a'} bg={'transparent'} href={'#'} display={'flex'} isLoading={isLoading} onClick={() => {
+                    HandleAddToCart()
+                }}>
                   <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-                </chakra.a>
+                </Button>
               </Tooltip>
             </Flex>
   
@@ -107,7 +133,6 @@ function Product({record}) {
             </Flex>
           </Box>
         </Box>
-      </Flex>
      );
 }
 
