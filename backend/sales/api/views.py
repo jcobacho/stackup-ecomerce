@@ -4,7 +4,9 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from sales.api.serializers import OrderSerializer, OrderCreateSerializer, CartSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import decorators, status
+from django.shortcuts import get_object_or_404
+
 from sales.api.permissions import IsOwner
 
 class CartViewSet(viewsets.ReadOnlyModelViewSet):
@@ -28,6 +30,13 @@ class CartViewSet(viewsets.ReadOnlyModelViewSet):
             order = Order.objects.create(paid=False, client=request.user)
 
         return Response(self.serializer_class(order).data)
+
+    @decorators.action(methods=['post'], detail=False)
+    def empty_cart(self, request):
+        
+        order = get_object_or_404(Order, client=request.user, paid=False)
+        order.orderitem_set.all().delete()
+        return Response(CartSerializer(order).data, status=status.HTTP_200_OK)
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
