@@ -73,18 +73,35 @@ export const cartApi = coreApi.injectEndpoints({
 const cartSlice = createSlice({
 	name: "cart",
 	initialState: initialCartState as CartModal,
-	reducers: {},
+	reducers: {
+		refreshCart: (state) => {
+			const cart = sessionStorage.getItem("cart");
+			if (cart) {
+				const response: CartModal = JSON.parse(
+					cart as string,
+				)
+				state.orderitems = response.orderitems;
+				state.totalAmount = response.totalAmount;
+				state.totalQuantity = response.totalQuantity;
+			}
+			return state;
+		},
+		removeCart: (state: CartModal) => {
+			state = initialCartState;
+			sessionStorage.removeItem("cart");
+			
+			return state;
+		},
+	},
 	extraReducers(builder) {
     	builder.addMatcher(
         	cartApi.endpoints.getMyCart.matchFulfilled,
         	(state, { payload }) => {
-            
-
-              console.log("payload in getMyCart")
-              console.log(payload)
-              state.orderitems = payload.orderitems
+                state.orderitems = payload.orderitems
             	state.totalAmount = payload.totalAmount;
-            	state.totalQuantity = payload.totalQuantity;				
+            	state.totalQuantity = payload.totalQuantity;		
+				
+				sessionStorage.setItem("cart", `${JSON.stringify(payload)}`);			
                             	
             	return state;
         	},
@@ -93,6 +110,7 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer
+export const { refreshCart, removeCart } = cartSlice.actions;
 
 export const cartItems = (state: RootState): CartItem[] => state.cart.orderitems
 export const totalAmount = (state: RootState): number => state.cart.totalAmount

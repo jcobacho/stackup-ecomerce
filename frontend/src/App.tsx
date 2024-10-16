@@ -14,6 +14,7 @@ import UserPage from './user/pages/UserPage'
 import AccessDenied from './core/pages/403'
 import CreateUser from './user/pages/CreateUser';
 import EditUser from './user/pages/EditUser';
+import { refreshCart } from './cart/services/cartSlice';
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
     if (sessionStorage.getItem("isAuthenticated") === "true" && authState.access === null) {
         const dispatch = useAppDispatch()
         dispatch(refreshAuthentication())
+        dispatch(refreshCart())
+        
     }
   
   const router = createBrowserRouter([

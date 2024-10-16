@@ -58,9 +58,7 @@ export const authApi = createApi({
 				  // load user cart
 
 				  if (data.access && data.user.isShopper){
-
-						const cart = await dispatch(coreApi.endpoints.getMyCart.initiate())
-												
+						await dispatch(coreApi.endpoints.getMyCart.initiate())												
 				  }				
 
 				} catch (err) {

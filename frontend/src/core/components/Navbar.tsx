@@ -34,7 +34,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { logout } from '../../auth/services/authSlice';
 import store, { useAppSelector } from "../../store";
-import { totalQuantity } from '../../cart/services/cartSlice';
+import { removeCart, totalQuantity } from '../../cart/services/cartSlice';
 
 export default function WithSubnavigation({openDrawer, isAuthenticated, authState}) {
   const { isOpen, onToggle } = useDisclosure()
@@ -167,7 +167,7 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             </Center>
             <br />
             <MenuDivider />
-            <MenuItem onClick={() => store.dispatch(logout())}>Logout</MenuItem>
+            <MenuItem onClick={() => {store.dispatch(logout()); store.dispatch(removeCart()) }}>Logout</MenuItem>
           </MenuList>
         </Menu>}
       </Flex>

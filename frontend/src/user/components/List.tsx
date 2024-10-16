@@ -10,7 +10,7 @@ import * as React from "react";
 function UserList({debouncedSearch, page}) {
 
     const [toDelete, setToDelete] = useState(0)
-    const {data, isLoading} = useGetAllUsersQuery({search: debouncedSearch, page});
+    const {data, isFetching} = useGetAllUsersQuery({search: debouncedSearch, page});
 
     const  { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete }= useDisclosure()
     const records = data?.results ?? []
@@ -34,7 +34,7 @@ function UserList({debouncedSearch, page}) {
                     </Thead>
                     <Tbody>
 
-                        {!isLoading && records.map((record: UserModel) => (
+                        {!isFetching && records.map((record: UserModel) => (
                             
                             <UserRow key={record.id} record={record} setToDelete={setToDelete} onOpenDelete={onOpenDelete}/>
                         ))}
@@ -49,7 +49,7 @@ function UserList({debouncedSearch, page}) {
                 </Table>
             </TableContainer>}
 
-            {isLoading && <Loading/>}
+            {isFetching && <Loading/>}
             
             </>
      );

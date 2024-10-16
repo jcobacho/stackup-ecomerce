@@ -69,7 +69,7 @@ export const userApi = coreApi.injectEndpoints({
 			  // the Headers and calls `JSON.stringify(patch)`
 			  body: recursiveToSnake(patch)			  
 			}),
-			invalidatesTags: ["User"]
+			invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
 
 		}),
 		deleteUser: build.mutation<void, number>({
