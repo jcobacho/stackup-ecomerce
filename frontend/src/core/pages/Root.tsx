@@ -3,9 +3,16 @@ import { Outlet } from "react-router-dom";
 import ScrollToTop from 'react-scroll-to-top';
 import { Box, useDisclosure } from '@chakra-ui/react';
 import Sidebar from '../components/Sidebar';
+import { useEffect } from 'react';
 
 function Root() {
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    useEffect(() => {
+        isOpen
+          ? (document.body.style.overflowY = 'hidden')
+          : (document.body.style.overflowY = 'initial')
+      }, [isOpen])
     
     return ( 
     
