@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import { createSlice } from "@reduxjs/toolkit";
 import { toCamelResponseHandler } from "../../core/utils";
+import { coreApi } from "../../core/services/coreSlice";
 
 
 // Define our service using a base URL and expected endpoints
@@ -29,7 +30,45 @@ export const authApi = createApi({
                 url: "token/",
                 method: "POST",
                 body: credentials,
-			}),			
+			}),
+			// async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+			// 	// get a random user
+			// 	const loginResult = await fetchWithBQ({
+			// 		url: "token/",
+			// 		method: "POST",
+			// 		body: _arg,
+			// 	})
+
+			// 	if (loginResult.error) throw loginResult.error
+
+			// 	const data = loginResult.data as UserResponse
+			// 	if (data.access && data.user.isShopper){
+
+			// 		const result = await _queryApi.dispatch(coreApi.endpoints.getMyCart.initiate())
+			// 		// const result = await coreApi.getMyCart
+					
+			// 	}
+			// 	return loginResult
+			// },	
+			async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
+				// `onStart` side-effect
+				try {
+				  const { data } = await queryFulfilled
+				  // `onSuccess` side-effect
+				  // load user cart
+
+				  if (data.access && data.user.isShopper){
+
+						const cart = await dispatch(coreApi.endpoints.getMyCart.initiate())
+												
+				  }				
+
+				} catch (err) {
+				  // `onError` side-effect
+				  console.log("err")
+				  console.log(err)
+				}
+			  },		
         }),
         refresh: builder.mutation<TokenResponse, RefreshRequest>({
             query: (credentials) => ({
@@ -97,7 +136,7 @@ const authSlice = createSlice({
             	state.refresh = payload.refresh;
 				sessionStorage.setItem("isAuthenticated", "true");
                 sessionStorage.setItem("user", `${JSON.stringify(payload)}`);
-                            	
+                           	
             	return state;
         	},
     	);       	
