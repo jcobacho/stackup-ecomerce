@@ -21,3 +21,13 @@ export interface AddToCartRequest {
 	quantity: number;	
 	set_qty?: boolean;	
 }
+export interface PayOrderRequest {
+	name: string
+  emailAddress: string
+  phoneNumber: string
+  address: string
+  zipcode: string
+  city: string
+  country: string
+  
+}
