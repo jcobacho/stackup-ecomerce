@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
 import CartItem, { CartModel } from './types'
 
@@ -64,6 +64,12 @@ export const cartApi = coreApi.injectEndpoints({
                 	url: `/orders/cart/`,
             	}),            	
         	}),
+			emptyCart: builder.mutation<CartModel, void>({
+            	query: () => ({
+                	url: `/orders/cart/empty_cart/`,
+					method: 'POST'
+            	}),            	
+        	}),
     	};
 	},
 });
@@ -89,8 +95,9 @@ const cartSlice = createSlice({
 	},
 	extraReducers(builder) {
     	builder.addMatcher(
-        	cartApi.endpoints.getMyCart.matchFulfilled,
+        	isAnyOf(cartApi.endpoints.getMyCart.matchFulfilled, cartApi.endpoints.emptyCart.matchFulfilled),
         	(state, { payload }) => {
+
                 state.orderitems = payload.orderitems
             	state.totalAmount = payload.totalAmount;
             	state.totalQuantity = payload.totalQuantity;		
@@ -111,4 +118,4 @@ export const totalAmount = (state: RootState): number => state.cart.totalAmount
 export const totalQuantity = (state: RootState): number =>
   state.cart.totalQuantity
 
-export const { useGetMyCartQuery } = cartApi;
+export const { useGetMyCartQuery, useEmptyCartMutation } = cartApi;

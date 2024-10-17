@@ -1,12 +1,27 @@
 import { Box, Button, Heading, HStack, List, Text } from "@chakra-ui/react";
 import { useAppSelector } from "../../store";
-import { cartItems, totalQuantity } from "../services/cartSlice";
+import { cartItems, totalQuantity, useEmptyCartMutation } from "../services/cartSlice";
 import CartItem from "./CartItem";
 
 function CartDrawer({onClose}) {
 
     const orderitems = useAppSelector(cartItems) ?? []
     const totalQty = useAppSelector(totalQuantity) ?? 0
+
+    const [emptyCart, {isLoading}] = useEmptyCartMutation()
+
+    async function HandleEmptyCartClick(e) {
+      e.preventDefault()
+
+      const {data, error} = await emptyCart()
+      if (data){
+        console.log('cart emptied successfully')
+      }
+      if (error){
+        console.log(error.data.detail)
+      }
+      
+    }
 
     return ( 
 
@@ -22,8 +37,9 @@ function CartDrawer({onClose}) {
                   fontSize="0.9375rem"
                   textTransform="capitalize"
                   m="0"
+                  isLoading={isLoading}
                   textDecoration="underline"
-                  // onClick={emptyCart}
+                  onClick={HandleEmptyCartClick}
                   _hover={{
                     color: 'accent',
                   }}
