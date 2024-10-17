@@ -10,7 +10,7 @@ import {
     
   } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
-import CartDrawer from '../../cart/components/CartDrawer';
+import CartDrawerBody from '../../cart/components/CartDrawerBody';
 import CartDrawerFooter from '../../cart/components/CartDrawerFooter';
 
 function Sidebar({ isOpen, onClose }) {
@@ -23,7 +23,7 @@ function Sidebar({ isOpen, onClose }) {
           <DrawerHeader>{`My Cart`}</DrawerHeader>
           <DrawerBody>
 
-            <CartDrawer onClose={onClose}/>          
+            <CartDrawerBody onClose={onClose}/>          
             
           </DrawerBody>
 
