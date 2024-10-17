@@ -13,6 +13,10 @@ const CartItem: React.FC<{ item: CartItemType }> = ({ item }): JSX.Element => {
 
   async function HandleItemActionClick(quantity, set_qty, msg) {
 
+    // prevent if still request pending
+    if (isLoading)
+      return
+
     const {data, error} = await addToCart({ id: item.product, quantity, set_qty } as AddToCartRequest)
       if (data){
         // raise toaster
