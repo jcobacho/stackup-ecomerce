@@ -15,8 +15,11 @@ import {
   } from '@chakra-ui/react'
   import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs'
   import { FiShoppingCart } from 'react-icons/fi'
+import { authState } from '../../auth/services/authSlice'
+import { AuthState } from '../../auth/services/types'
 import { useAddToCartMutation } from '../../cart/services/cartSlice'
 import { AddToCartRequest } from '../../cart/services/types'
+import { RootState, useAppSelector } from '../../store'
   interface RatingProps {
     rating: number
     numReviews: number
@@ -51,6 +54,8 @@ import { AddToCartRequest } from '../../cart/services/types'
   }
 
 function Product({record}) {
+
+    const authState = useAppSelector( (state: RootState): AuthState | null => state.auth)
 
     const [addToCart, {isLoading}] = useAddToCartMutation()
 
@@ -111,7 +116,7 @@ function Product({record}) {
                 </chakra.a>
                 
               </Box>
-              <Tooltip
+              {authState?.user?.isShopper && <Tooltip
                 label="Add to cart"
                 bg="white"
                 placement={'top'}
@@ -122,7 +127,7 @@ function Product({record}) {
                 }}>
                   <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
                 </Button>
-              </Tooltip>
+              </Tooltip>}
             </Flex>
   
             <Flex justifyContent="space-between" alignContent="center">
