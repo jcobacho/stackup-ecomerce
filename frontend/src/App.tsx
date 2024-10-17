@@ -15,6 +15,7 @@ import AccessDenied from './core/pages/403'
 import CreateUser from './user/pages/CreateUser';
 import EditUser from './user/pages/EditUser';
 import { coreApi } from './core/services/coreSlice';
+import CheckoutPage from './cart/pages/CheckoutPage';
 
 function App() {
 
@@ -64,13 +65,7 @@ function App() {
                 {
                     path: "/users",
                     element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
-                    // children: [
-                    //     {
-                    //         path: "/users/list",
-                    //         element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
-                    //     }, 
-                        
-                    // ]
+                    
                 },     
                 {
                     path: "users/:id/edit",
@@ -78,7 +73,13 @@ function App() {
                     loader: async ({ params }) => {
                         return params.id;
                     },
-                },       
+                },  
+                
+                {
+                    path: "/checkout",
+                    element: authState?.user ? authState.user?.isShopper ? <CheckoutPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    
+                },  
             ],
         },
         {

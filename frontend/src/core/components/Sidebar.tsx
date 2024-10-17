@@ -27,7 +27,7 @@ function Sidebar({ isOpen, onClose }) {
             
           </DrawerBody>
 
-          <CartDrawerFooter/>
+          <CartDrawerFooter onClose={onClose}/>
 
 
         </DrawerContent>

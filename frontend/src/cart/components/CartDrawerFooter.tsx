@@ -1,8 +1,9 @@
 import { Box, Button, HStack, Spacer, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store";
 import { totalAmount, totalQuantity } from "../services/cartSlice";
 
-function CartDrawerFooter() {
+function CartDrawerFooter({onClose}) {
 
     const amount = useAppSelector(totalAmount) ?? 0
     const quantity = useAppSelector(totalQuantity) ?? 0 
@@ -22,10 +23,12 @@ function CartDrawerFooter() {
 
               <Box p={6}>
                 <Button
-                  as="a"
+                  as={Link}
                   cursor="pointer"
-                  onClick={() => alert('got to checkout!')}
+                  to={'/checkout'}
                   width="100%"
+                  onClick={onClose}
+
                 >
                   Checkout
                 </Button>
