@@ -20,6 +20,8 @@ import { AuthState } from '../../auth/services/types'
 import { useAddToCartMutation } from '../../cart/services/cartSlice'
 import { AddToCartRequest } from '../../cart/services/types'
 import { RootState, useAppSelector } from '../../store'
+import { Link as RouterLink } from "react-router-dom";
+
   interface RatingProps {
     rating: number
     numReviews: number
@@ -111,9 +113,9 @@ function Product({record}) {
                 lineHeight="tight"
                 isTruncated>
 
-                <chakra.a href={'#'} display={'flex'}>
+                <RouterLink to={`/products/${record.id}/detail`} >
                     {record.name}
-                </chakra.a>
+                </RouterLink>
                 
               </Box>
               {authState?.user?.isShopper && <Tooltip

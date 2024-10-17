@@ -16,6 +16,7 @@ import CreateUser from './user/pages/CreateUser';
 import EditUser from './user/pages/EditUser';
 import { coreApi } from './core/services/coreSlice';
 import CheckoutPage from './cart/pages/CheckoutPage';
+import ProductDetailPage from './inventory/pages/ProductDetailPage';
 
 function App() {
 
@@ -58,6 +59,13 @@ function App() {
                     element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
 
                 },  
+                {
+                    path: "/products/:id/detail",
+                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductDetailPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    loader: async ({ params }) => {
+                        return params.id;
+                    },
+                }, 
                 {
                     path: "/users/create",
                     element: authState?.user ? authState.user?.isStaff ? <CreateUser  />: <AccessDenied/> :<Navigate to='/login'/>,
