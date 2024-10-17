@@ -3,6 +3,8 @@ import { useDebounce } from '../../core/hooks/useDebounce';
 // import SearchUser from '../components/Search';
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Box, Button, Spacer, StackDivider, VStack } from '@chakra-ui/react';
+import AdminSearch from '../../core/components/AdminSearch';
+import ProductAdminList from '../components/List';
 
 
 function ProductAdminListPage() {
@@ -27,11 +29,11 @@ function ProductAdminListPage() {
                     <Button as={ReactRouterLink} to={'/users/create'}>Create</Button>
                 </Box>
                 <Spacer />
-                {/* <SearchUser search={search} setSearch={setSearch} setPage={setPage}/> */}
+                <AdminSearch search={search} setSearch={setSearch} setPage={setPage}/>
                 
             </Box>
             <Box w={"100%"} >
-                {/* <UserList debouncedSearch={debouncedSearch} page={page}/> */}
+                <ProductAdminList debouncedSearch={debouncedSearch} page={page}/>
             </Box>
 
             <Box h={'100px'}></Box>

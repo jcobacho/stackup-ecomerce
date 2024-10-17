@@ -40,7 +40,33 @@ export const productApi = coreApi.injectEndpoints({
                 query: (id) => ({
                 	url: `/products/${id}/`,
             	}),
-            })
+            }),
+            getAllAdminProducts: builder.query<AllProductResponse, SearchRequest>({
+            	query: (q) => ({
+                	url: `/products/admin/`,
+                    params: q
+            	}),
+                providesTags: (data) =>
+                    data?.results
+                    ? [
+                        ...data.results.map(({ id }) => ({ type: 'ProductAdmin' as const, id })),
+                        { type: 'ProductAdmin', id: 'LIST' },
+                        ]
+                    : [{ type: 'ProductAdmin', id: 'LIST' }],
+            	
+        	}),
+            deleteProduct: builder.mutation<void, number>({
+                query: (id) => ({
+                    url: `products/admin/${id}/`,
+                    method: "DELETE",
+                    credentials: "include",
+                    body: {}
+                    
+                }),
+                invalidatesTags: (result, error, id) => [{ type: 'ProductAdmin', id: id }],
+    
+                
+            }),
         	
     	};
 	},
@@ -49,6 +75,8 @@ export const productApi = coreApi.injectEndpoints({
 // Exporting the generated methods from createApi
 export const {
 	useGetAllProductsQuery,
-    useGetProductByIdQuery
+    useGetProductByIdQuery,
+    useGetAllAdminProductsQuery,
+    useDeleteProductMutation
 
 } = productApi;
