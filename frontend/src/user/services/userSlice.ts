@@ -1,8 +1,9 @@
 // import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
 import { RootState } from "../../store";
-import { AllUsersResponse, SearchRequest, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
+import { AllUsersResponse, UserCreateRequest, UserModel, UserUpdateRequest } from "./types";
 import { coreApi } from "../../core/services/coreSlice";
+import { SearchRequest } from "../../core/services/types";
 
 // Define our service using a base URL and expected endpoints
 export const userApi = coreApi.injectEndpoints({

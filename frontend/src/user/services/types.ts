@@ -1,8 +1,4 @@
 
-export interface SearchRequest {
-	page: number;
-	search: string;
-}
 
 export interface UserCreateRequest {
 	username: string;
