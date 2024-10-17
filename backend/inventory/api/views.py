@@ -2,7 +2,7 @@ from sales.models import Order, OrderItem
 from sales.api.serializers import CartSerializer
 from inventory.models import Product
 from inventory.api.serializers import ProductAddCartSerializer
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from inventory.api.serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -12,6 +12,8 @@ from api.permissions import IsShopper
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
     def get_serializer_class(self):
         if self.action == 'add_to_cart':
