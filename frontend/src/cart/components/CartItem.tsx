@@ -1,4 +1,4 @@
-import { Box, Text, HStack, Image, Stack, Button } from '@chakra-ui/react'
+import { Box, Text, HStack, Image, Stack, Button, VStack } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux'
 // import Image from 'next/image'
 import ProductQuantity from './ProductQuantity'
@@ -11,14 +11,13 @@ const CartItem: React.FC<{ item: CartItemType }> = ({ item }): JSX.Element => {
 
   const [addToCart, {isLoading}] = useAddToCartMutation()
 
-  async function HandleRemoveItemClick(e) {
-    e.preventDefault();
+  async function HandleItemActionClick(quantity, set_qty, msg) {
 
-    const {data, error} = await addToCart({ id: item.product, quantity: 0, set_qty: true } as AddToCartRequest)
+    const {data, error} = await addToCart({ id: item.product, quantity, set_qty } as AddToCartRequest)
       if (data){
         // raise toaster
         // distpatch to update state
-        console.log("item removed successfully")
+        console.log(msg)
       }
 
       if(error){
@@ -53,17 +52,35 @@ const CartItem: React.FC<{ item: CartItemType }> = ({ item }): JSX.Element => {
 
           <ProductQuantity
             quantity={item.qty}
-            increment={() => alert('increase')}
-            decrement={() => alert('decrease')}
+            increment={() => {
+              HandleItemActionClick(item.qty + 1, true, "item successfully updated")
+            }}
+            decrement={() => {
+              let msg = "item successfully updated"
+              const qty = item.qty - 1
+              if (qty === 0){
+                msg = "item successfully removed"
+              }
+              HandleItemActionClick(qty, true, msg)
+            }}
             width="6rem"
             height="2rem"
           />
+      </Box>
+      <Box flexGrow={1} display={'flex'} textAlign={'end'} alignItems={'end'}>
+        <Box flexGrow={1} display={'flex'} flexDirection={'column'} alignItems={'end'} h={'100%'}>
+          <Button bg={'transparent'} p={0} onClick={() => {HandleItemActionClick(0, true, "item successfully removed")}}>
+            <FiTrash/>
+          </Button>
+
+          {isLoading && <Button
+            bg={'transparent'}
+            marginTop={'auto'}
+            p="0"
+            isLoading={isLoading}
+                        
+          />}          
         </Box>
-      <Box flexGrow={1} textAlign={'end'}>
-        <Button bg={'transparent'} p={0} onClick={HandleRemoveItemClick} isLoading={isLoading}>
-          <FiTrash/>
-        </Button>
-      
       </Box>
     </Stack>
       
