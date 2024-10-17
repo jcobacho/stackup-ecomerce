@@ -1,6 +1,6 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
-import CartItem, { CartModel } from './types'
+import CartItem, { AddToCartRequest, CartModel } from './types'
 
 
 const initialCartState = {
@@ -64,6 +64,14 @@ export const cartApi = coreApi.injectEndpoints({
                 	url: `/orders/cart/`,
             	}),            	
         	}),
+			addToCart: builder.mutation<CartModel, AddToCartRequest>({
+            	query: ({id, ...body}) => ({
+                	url: `/products/${id}/add_to_cart/`,
+                	method: "POST",
+                	credentials: "include",
+                	body: body,                	
+            	}),            	
+        	}),
 			emptyCart: builder.mutation<CartModel, void>({
             	query: () => ({
                 	url: `/orders/cart/empty_cart/`,
@@ -95,7 +103,7 @@ const cartSlice = createSlice({
 	},
 	extraReducers(builder) {
     	builder.addMatcher(
-        	isAnyOf(cartApi.endpoints.getMyCart.matchFulfilled, cartApi.endpoints.emptyCart.matchFulfilled),
+        	isAnyOf(cartApi.endpoints.getMyCart.matchFulfilled, cartApi.endpoints.addToCart.matchFulfilled, cartApi.endpoints.emptyCart.matchFulfilled),
         	(state, { payload }) => {
 
                 state.orderitems = payload.orderitems
@@ -118,4 +126,4 @@ export const totalAmount = (state: RootState): number => state.cart.totalAmount
 export const totalQuantity = (state: RootState): number =>
   state.cart.totalQuantity
 
-export const { useGetMyCartQuery, useEmptyCartMutation } = cartApi;
+export const { useGetMyCartQuery, useAddToCartMutation, useEmptyCartMutation } = cartApi;
