@@ -56,10 +56,10 @@ export const authApi = createApi({
 				  const { data } = await queryFulfilled
 				  // `onSuccess` side-effect
 				  // load user cart
-
-				  if (data.access && data.user.isShopper){
-						await dispatch(coreApi.endpoints.getMyCart.initiate())												
-				  }				
+				  if (data.access && data.user?.isShopper){
+					const {data, error} = await dispatch(coreApi.endpoints.getMyCart.initiate(undefined,{forceRefetch: true })) 
+					
+				}
 
 				} catch (err) {
 				  // `onError` side-effect

@@ -14,67 +14,78 @@ import UserPage from './user/pages/UserPage'
 import AccessDenied from './core/pages/403'
 import CreateUser from './user/pages/CreateUser';
 import EditUser from './user/pages/EditUser';
-import { refreshCart } from './cart/services/cartSlice';
+import { coreApi } from './core/services/coreSlice';
 
 function App() {
 
     const authState = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch()
 
     if (sessionStorage.getItem("isAuthenticated") === "true" && authState.access === null) {
-        const dispatch = useAppDispatch()
-        dispatch(refreshAuthentication())
-        dispatch(refreshCart())
-        
-    }
-  
-  const router = createBrowserRouter([
-    {
-        path: "/login",
-        element: <LoginPage/>
-                
-    },
-    {
-        path: "/",
-        element: <Root  />,                  
-        children: [
-            {
-                path: "/",
-                element: <HomePage  />,
-            },  
-            {
-                path: "/products",
-                element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
 
-            },  
-            {
-                path: "/users/create",
-                element: authState?.user ? authState.user?.isStaff ? <CreateUser  />: <AccessDenied/> :<Navigate to='/login'/>,
-            },           
-            {
-                path: "/users",
-                element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
-                // children: [
-                //     {
-                //         path: "/users/list",
-                //         element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
-                //     }, 
-                    
-                // ]
-            },     
-            {
-                path: "users/:id/edit",
-                element: authState?.user ? authState.user?.isStaff ? <EditUser  />: <AccessDenied/> :<Navigate to='/login'/>,
-                loader: async ({ params }) => {
-                    return params.id;
-                },
-            },       
-        ],
-    },
-    {
-        path: "*",
-        element: <NotFound />,
-    },
-]);
+        // update state with token from session
+        dispatch(refreshAuthentication())
+                     
+    }
+
+    async function loadCart() {
+        await dispatch(coreApi.endpoints.getMyCart.initiate( undefined, {forceRefetch: true })) 
+
+    }
+
+    // only load cart if authenticated and user is shopper otherwise it will load on login
+    if (sessionStorage.getItem("isAuthenticated") === "true" && authState.access !== null && authState.user?.isShopper) {
+        loadCart()   
+     }
+  
+    const router = createBrowserRouter([
+        {
+            path: "/login",
+            element: <LoginPage/>
+                
+        },
+        {
+            path: "/",
+            element: <Root  />,                  
+            children: [
+                {
+                    path: "/",
+                    element: <HomePage  />,
+                },  
+                {
+                    path: "/products",
+                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+
+                },  
+                {
+                    path: "/users/create",
+                    element: authState?.user ? authState.user?.isStaff ? <CreateUser  />: <AccessDenied/> :<Navigate to='/login'/>,
+                },           
+                {
+                    path: "/users",
+                    element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    // children: [
+                    //     {
+                    //         path: "/users/list",
+                    //         element: authState?.user ? authState.user?.isStaff ? <UserPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    //     }, 
+                        
+                    // ]
+                },     
+                {
+                    path: "users/:id/edit",
+                    element: authState?.user ? authState.user?.isStaff ? <EditUser  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    loader: async ({ params }) => {
+                        return params.id;
+                    },
+                },       
+            ],
+        },
+        {
+            path: "*",
+            element: <NotFound />,
+        },
+    ]);
 
 
   return (
