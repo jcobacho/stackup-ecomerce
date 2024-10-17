@@ -1,5 +1,5 @@
 
-from sales.models import Order, OrderItem
+from sales.models import Order, OrderItem, ShippingInfo
 from inventory.api.serializers import ProductSerializer
 from rest_framework import serializers
 from typing import Dict, Any
@@ -24,6 +24,11 @@ class CartSerializer(serializers.ModelSerializer):
     def get_orderitems(self, obj):
         return OrderItemSerializer(OrderItem.objects.filter(order__pk=obj.pk), many=True).data
 
+
+class PayOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingInfo
+        fields = ['id', 'name', 'address', 'email_address', 'city', 'country', 'zipcode']
 
 class OrderSerializer(serializers.ModelSerializer):
 
