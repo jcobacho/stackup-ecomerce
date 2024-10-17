@@ -77,7 +77,7 @@ function Product({record}) {
     return ( 
         <Box
           bg={useColorModeValue('white', 'gray.800')}
-          maxW="sm"
+          maxW="md"
           borderWidth="1px"
           rounded="lg"
           shadow="lg"
@@ -86,8 +86,14 @@ function Product({record}) {
             <Circle size="10px" position="absolute" top={2} right={2} bg="red.200" />
           )} */}
   
-          <Image src={record.imageUrl} alt={`Picture of ${record.name}`} roundedTop="lg" />
+          {/* <Image src={record.imageUrl} alt={`Picture of ${record.name}`} roundedTop="lg" /> */}
   
+          <Image
+          boxSize='200px'
+          w={'100%'}
+          objectFit='cover'
+          src={record.imageUrl}
+        /> 
           <Box p="6">
             <Box display="flex" alignItems="baseline">
               {/* {data.isNew && (

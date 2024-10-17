@@ -49,7 +49,7 @@ function ProductPage() {
         <div>
             
 
-            <SimpleGrid columns={{ base: 1, sm: 2,  md: 4}} spacingX='40px' spacingY='20px'>
+            <SimpleGrid columns={{ base: 1, sm: 2,  md: 3, lg: 4}} spacingX='40px' spacingY='20px'>
 
                 {records.map((record: { id: any; }) => (
                         <Product key={record.id} record={record}/>             
