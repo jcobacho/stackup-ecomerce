@@ -7,7 +7,10 @@ from typing import Dict, Any
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'image_url', 'price']
+        fields = ['id', 'name', 'description', 'image_url', 'price', 'owner']
+        extra_kwargs = {
+            'owner': {'read_only': True},            
+        }
         
         
 class ProductAddCartSerializer(serializers.ModelSerializer):

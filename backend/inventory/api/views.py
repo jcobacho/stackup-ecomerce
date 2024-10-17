@@ -1,15 +1,14 @@
 from sales.models import Order, OrderItem
 from sales.api.serializers import CartSerializer
 from inventory.models import Product
-from inventory.api.serializers import ProductAddCartSerializer
+from inventory.api.serializers import ProductAddCartSerializer, ProductSerializer
 from rest_framework import status, viewsets, filters
-from inventory.api.serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsShopper
+from api.permissions import IsShopper, IsSeller
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter]
@@ -61,3 +60,14 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
 
+class AdminProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [filters.SearchFilter]
+    permission_classes = [IsAuthenticated, IsSeller]
+    search_fields = ['name']
+
+    def get_queryset(self):
+        
+        return super().get_queryset().filter(owner=self.request.user)
+        
