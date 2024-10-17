@@ -2,7 +2,7 @@
 from sales.models import Order
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from sales.api.serializers import OrderSerializer, OrderCreateSerializer, CartSerializer
+from sales.api.serializers import OrderSerializer, OrderCreateSerializer, CartSerializer, PayOrderSerializer
 from rest_framework.response import Response
 from rest_framework import decorators, status
 from django.shortcuts import get_object_or_404
@@ -37,6 +37,25 @@ class CartViewSet(viewsets.ReadOnlyModelViewSet):
         order = get_object_or_404(Order, client=request.user, paid=False)
         order.orderitem_set.all().delete()
         return Response(CartSerializer(order).data, status=status.HTTP_200_OK)
+
+    @decorators.action(methods=['post'], detail=False)
+    def pay_order(self, request):
+        order = get_object_or_404(Order, client=request.user, paid=False)
+
+        serializer = PayOrderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data['order'] = order
+
+        shipping_info = serializer.save()
+
+        order.paid=True
+        order.shipping_info = shipping_info
+        order.save()
+
+        # lets create a new empty cart for the user
+        new_order = Order.objects.create(client=request.user, paid=False)
+        return Response(CartSerializer(new_order).data, status=status.HTTP_200_OK)
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
