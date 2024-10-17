@@ -7,25 +7,42 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 # Create your models here.
-class Order(models.Model):
 
-    client = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
-    paid = models.BooleanField(default=False)
-    
+
+class ShippingInfo(models.Model):
+
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+    email_address = models.CharField(verbose_name=_("Email Address"), max_length=255)
+    address = models.CharField(verbose_name=_("Address"),  max_length=255)
+    zipcode = models.CharField(verbose_name=_("Zip Code"), max_length=255)
+    city = models.CharField(verbose_name=_("City"), max_length=255)
+    country = models.CharField(verbose_name=_("Country"), max_length=255)
+       
     class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
+        verbose_name = _("Shipping Info")
+        verbose_name_plural = _("Shipping Info")
        
     def __str__(self) -> str:
-        return self.name
+        return f"{self.name} {self.address} {self.city} {self.country} {self.zipcode}"    
+
+class Order(models.Model):
+
+    paid = models.BooleanField(default=False)
+
+    client = models.ForeignKey(User, verbose_name=_("Client"), on_delete=models.CASCADE)
+    shipping_info = models.ForeignKey(ShippingInfo, verbose_name=_("Shipping Info"), on_delete=models.SET_NULL, null=True)
+    
+    class Meta:
+        verbose_name = _("Order")
+        verbose_name_plural = _("Orders")
+       
+    def __str__(self) -> str:
+        return str(self.id) + " " + self.client.__str__()
 
     @property
     def total_amount(self):
-        t = self.orderitem_set.all().aggregate(total=Sum(F('qty') * F('price')))
-        dir("t")
-        dir(t)
-        return t['total']
-
+        return self.orderitem_set.all().aggregate(total=Sum(F('qty') * F('price'))).get('total', 0)
+        
     @property
     def total_quantity(self):
         return self.orderitem_set.all().aggregate(total=Sum('qty')).get('total', 0)
@@ -53,3 +70,5 @@ class OrderItem(models.Model):
     @property
     def image_url(self) -> str:
         return self.product.image_url if self.product else ""
+
+
