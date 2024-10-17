@@ -3,17 +3,8 @@ import {
     Heading,
     SimpleGrid,
     Text,
-    useRadioGroup,
-    Image,
-    HStack,
     Stack,
-    FormControl,
-    FormLabel,
-    Input,
-    FormErrorMessage,
-    FormHelperText,
     Radio,
-    useColorModeValue,
     Spacer,
   } from '@chakra-ui/react'
   import { useState } from 'react'
@@ -21,39 +12,21 @@ import { useNavigate } from 'react-router'
 import FormField from '../../core/components/FormField'
 import FormLegend from '../../core/components/FormLegend'
 import { usePayOrderMutation } from '../services/cartSlice'
+import { PayOrderRequest } from '../services/types'
 import CheckoutSummary from './CheckoutSummary'
   
-  type Inputs = {
-    name: string
-    emailAddress: string
-    phoneNumber: string
-    address: string
-    ZIPCode: string
-    city: string
-    country: string
-    eMoneyNumber: number
-    eMoneyPin: number
-  }
   
   const CheckoutForm = (): JSX.Element => {
-    // const {
-    //   register,
-    //   handleSubmit,
-    //   formState: { errors },
-    // } = useForm<Inputs>({ mode: 'onBlur' })
-    // const { onCheckoutModalOpen } = useModal()
+    
     const navigate = useNavigate();
 
     const [payOrder, {isLoading}] = usePayOrderMutation()
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState<PayOrderRequest>({});
     const [formErrors, setFormErrors] = useState({});
 
     async function HandleFormSubmit(e){
         e.preventDefault()
-
-        console.log("formData")
-        console.log(formData)
 
         const {data, error} = await payOrder(formData)
 
@@ -68,14 +41,7 @@ import CheckoutSummary from './CheckoutSummary'
         }   
 
     }
-    // const mySubmit = (e: React.FormEvent<HTMLInputElement>) => {
-    //   e.preventDefault()
-    //   if (isDisabled) return
-    //   handleSubmit(() => {
-    //     onCheckoutModalOpen()
-    //   })(e)
-    // }
-  
+      
     return (
       <Stack
         as="form"

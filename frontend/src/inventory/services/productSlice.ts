@@ -36,6 +36,11 @@ export const productApi = coreApi.injectEndpoints({
                     return currentArg !== previousArg;
                 },
         	}),
+            getProductById: builder.query<ProductModel, number>({
+                query: (id) => ({
+                	url: `/products/${id}/`,
+            	}),
+            })
         	
     	};
 	},
@@ -44,5 +49,6 @@ export const productApi = coreApi.injectEndpoints({
 // Exporting the generated methods from createApi
 export const {
 	useGetAllProductsQuery,
+    useGetProductByIdQuery
 
 } = productApi;
