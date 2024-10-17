@@ -17,6 +17,7 @@ import EditUser from './user/pages/EditUser';
 import { coreApi } from './core/services/coreSlice';
 import CheckoutPage from './cart/pages/CheckoutPage';
 import ProductDetailPage from './inventory/pages/ProductDetailPage';
+import ProductAdminListPage from './inventory/pages/ProductAdminListPage';
 
 function App() {
 
@@ -52,19 +53,24 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <HomePage  />,
-                },  
-                {
-                    path: "/products",
-                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    element: <Navigate to={'/products'}  />,
 
                 },  
                 {
+                    path: "/products",
+                    element: <ProductPage  />
+                },  
+                {
                     path: "/products/:id/detail",
-                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductDetailPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    element: <ProductDetailPage  />,
                     loader: async ({ params }) => {
                         return params.id;
                     },
+                },
+                {
+                    path: "/products/manage/",
+                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductAdminListPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    
                 }, 
                 {
                     path: "/users/create",

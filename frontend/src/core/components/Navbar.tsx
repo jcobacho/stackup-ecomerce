@@ -167,6 +167,9 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             </Center>
             <br />
             <MenuDivider />
+            {authState?.user?.isStaff && <MenuItem as={ReactRouterLink} to={'/users'}>Manage Users</MenuItem>}
+            <MenuItem >My Orders</MenuItem>
+            {authState?.user?.isSeller && <MenuItem as={ReactRouterLink} to={'/products/manage/'}>My Products</MenuItem>}
             <MenuItem onClick={() => {store.dispatch(logout()); store.dispatch(removeCart()) }}>Logout</MenuItem>
           </MenuList>
         </Menu>}
@@ -342,15 +345,15 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Products',
     href: '/products',
-    perms: ['isShopper', 'isSeller']
+    // perms: ['isShopper', 'isSeller']
 
   },
-  {
-    label: 'Users',
-    href: '/users',
-    perms: ['isStaff']
+  // {
+  //   label: 'Users',
+  //   href: '/users',
+  //   perms: ['isStaff']
 
-  },
+  // },
 //   {
 //     label: 'Find Work',
 //     children: [
