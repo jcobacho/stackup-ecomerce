@@ -29,16 +29,30 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        add_to_quantity = serializer.validated_data.get('quantity') or 1        
+        add_to_quantity = serializer.validated_data.get('quantity')       
+        set_qty = serializer.validated_data.get('set_qty', False)        
         
         cart = cart_qs.first()
-        # check if an order item
+        # check if an order item exists
         orderitem_qs = OrderItem.objects.filter(product=product, order=cart)
         if orderitem_qs.exists():
             orderitem = orderitem_qs.first()
-            # set the quantity
-            orderitem.qty += add_to_quantity
-            orderitem.save()
+            
+            # with set qty the orderitem qty will be the same as the request param
+            if set_qty:
+                qty = add_to_quantity
+            else:
+                qty = orderitem.qty + add_to_quantity
+
+
+            # remove item in case of 0 quantity
+            if qty == 0:
+                orderitem.delete()
+
+            else:
+                # set the quantity
+                orderitem.qty = qty
+                orderitem.save()
         else:
             # create order item
             orderitem = OrderItem.objects.create(product=product, order=cart, qty= add_to_quantity, price=product.price)

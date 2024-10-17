@@ -11,8 +11,9 @@ class ProductSerializer(serializers.ModelSerializer):
         
         
 class ProductAddCartSerializer(serializers.ModelSerializer):
-    quantity = serializers.IntegerField(required=False, min_value=1)
+    quantity = serializers.IntegerField(min_value=0)
+    set_qty = serializers.BooleanField(required=False)
 
     class Meta:
         model = Product
-        fields = ("id", "quantity")
+        fields = ("id", "quantity", "set_qty")
