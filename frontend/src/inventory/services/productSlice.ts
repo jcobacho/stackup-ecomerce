@@ -1,5 +1,4 @@
 import type {
-    AddToCartRequest,
     AllProductResponse,
 	ProductModel
 } from "./types";
@@ -46,14 +45,14 @@ export const productApi = coreApi.injectEndpoints({
             // 	},
             // 	providesTags: ["BlogModel"],
         	// }),
-        	addToCart: builder.mutation<CartModal, AddToCartRequest>({
-            	query: ({id, ...body}) => ({
-                	url: `/products/${id}/add_to_cart/`,
-                	method: "POST",
-                	credentials: "include",
-                	body: body,                	
-            	}),            	
-        	}),
+        	// addToCart: builder.mutation<CartModal, AddToCartRequest>({
+            // 	query: ({id, ...body}) => ({
+            //     	url: `/products/${id}/add_to_cart/`,
+            //     	method: "POST",
+            //     	credentials: "include",
+            //     	body: body,                	
+            // 	}),            	
+        	// }),
         	// deletePost: builder.mutation<BlogResponse, BlogDeleteRequest>({
             // 	query: (body) => ({
             //     	url: "posts/post/delete",

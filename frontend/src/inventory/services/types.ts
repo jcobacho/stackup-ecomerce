@@ -7,11 +7,6 @@ export interface ProductModel {
 	
 }
 
-export interface AddToCartRequest {
-	id: number;
-	quantity: number;	
-}
-
 export type AllProductResponse = {
 	count: number
     previous: number | null

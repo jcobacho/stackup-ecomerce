@@ -15,11 +15,8 @@ import {
   } from '@chakra-ui/react'
   import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs'
   import { FiShoppingCart } from 'react-icons/fi'
-import { updateCartState } from '../../cart/services/cartSlice'
-import { useAppDispatch } from '../../store'
-import { useAddToCartMutation } from '../services/productSlice'
-import { AddToCartRequest } from '../services/types'
-import { CartModel } from '../../cart/services/types'
+import { useAddToCartMutation } from '../../cart/services/cartSlice'
+import { AddToCartRequest } from '../../cart/services/types'
   interface RatingProps {
     rating: number
     numReviews: number
@@ -56,7 +53,6 @@ import { CartModel } from '../../cart/services/types'
 function Product({record}) {
 
     const [addToCart, {isLoading}] = useAddToCartMutation()
-    const dispatch = useAppDispatch()
 
     async function HandleAddToCart(){
 
@@ -64,7 +60,8 @@ function Product({record}) {
       if (data){
         // raise toaster
         // distpatch to update state
-        dispatch(updateCartState(data as CartModel))
+        console.log("display toastr")
+        // dispatch(updateCartState(data as CartModel))
       }
 
       if(error){
