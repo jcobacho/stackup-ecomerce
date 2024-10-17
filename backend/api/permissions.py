@@ -9,3 +9,13 @@ class IsShopper(permissions.BasePermission):
 
     def has_permission(self, request, view,):
         return request.user.is_shopper
+
+
+class IsSeller(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    """
+
+    def has_permission(self, request, view,):
+        return request.user.is_seller
