@@ -1,28 +1,48 @@
 import { Box, Button, Container, Flex, FormControl, FormLabel, Spacer, useColorModeValue, VStack } from "@chakra-ui/react";
-import { useState } from "react";
-import UserForm from "../components/Form";
-import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
-import { ProductAdminCreateError, ProductAdminCreateRequest } from "../services/types";
+import { useEffect, useState } from "react";
+import { Link as ReactRouterLink, useLoaderData, useNavigate } from 'react-router-dom'
+import { ProductAdminCreateError, ProductAdminCreateRequest, ProductAdminUpdateRequest } from "../services/types";
 import ProductAdminForm from "../components/Form";
-import { useCreateProductMutation } from "../services/productSlice";
+import { useGetAdminProductByIdQuery, useUpdateProductMutation } from "../services/productSlice";
+import NotFound from "../../core/pages/404";
 
-function CreateProductAdminPage() {
+function EditProductAdminPage() {
 
-    const [createProduct, {isLoading: isCreating}] = useCreateProductMutation();
+    const query = useLoaderData() as number | undefined ;
 
-    const [formData, setFormData] = useState<ProductAdminCreateRequest>({});
+    const {data:record, isFetching, error } = useGetAdminProductByIdQuery(query ?? 0);
+    
+    const [updateProduct, {isLoading: isUpdating}] = useUpdateProductMutation();
+
+    const [formData, setFormData] = useState<ProductAdminUpdateRequest>(record);
     const [formErrors, setFormErrors] = useState<ProductAdminCreateError>({});
 
     const navigate = useNavigate();
 
-    async function HandleFormSubmit(e){
-        // const form = e.target
-        e.preventDefault();
+    useEffect(() => setFormData({
+        id: query ?? 0,
+        name: record?.name ?? '',
+        description: record?.description ?? '',
+        imageUrl: record?.imageUrl ?? '',
+        price: record?.price ?? 0,
+    }), [record])
+
+    if (isFetching)
+    	return (
+        	<div>
+            	<h1>Loading products data...</h1>
+        	</div>
+    	);
+        
+    else if (error?.status === 404){
+        return <NotFound/>
+    } 
+
+    async function HandleFormSubmit(){
 
         try {
-
             
-            const { data, error } = await createProduct(formData)            
+            const { data, error } = await updateProduct(formData)            
 
             if (data){
               navigate('/products/manage/')
@@ -57,7 +77,7 @@ function CreateProductAdminPage() {
                             <Spacer/>
                             <Button bg="blue.400" _hover={{
                             bg: 'blue.500',
-                            }} isLoading={isCreating} colorScheme='blue' mr={3} type={'submit'}>
+                            }} isLoading={isUpdating} colorScheme='blue' mr={3} type={'submit'}>
                             Save
                             </Button>
                             <Button as={ReactRouterLink} to={-1 as any}>Cancel</Button>
@@ -72,4 +92,4 @@ function CreateProductAdminPage() {
     );
 }
 
-export default CreateProductAdminPage;
+export default EditProductAdminPage;

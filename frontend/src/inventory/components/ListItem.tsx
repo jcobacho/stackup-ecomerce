@@ -21,7 +21,7 @@ const ListItem = React.memo(function ListItem({record, setToDelete, onOpenDelete
             <Td>
                 <Stack direction='row' spacing={4}>
                     <Button as={ReactRouterLink}                         
-                        to={`/products/admin/${record.id}/edit`} 
+                        to={`/products/manage/${record.id}/edit`} 
                         bg={'transparent'}
                         p={0}
                         _hover={{bg: 'transparent'}}

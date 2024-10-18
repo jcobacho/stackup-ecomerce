@@ -1,6 +1,7 @@
 import type {
     AllProductResponse,
 	ProductAdminCreateRequest,
+	ProductAdminUpdateRequest,
 	ProductModel
 } from "./types";
 
@@ -57,6 +58,11 @@ export const productApi = coreApi.injectEndpoints({
                     : [{ type: 'ProductAdmin', id: 'LIST' }],
             	
         	}),
+            getAdminProductById: builder.query<ProductModel, number>({
+                query: (id) => ({
+                	url: `/products/admin/${id}/`,
+            	}),
+            }),
             createProduct: builder.mutation<ProductModel, ProductAdminCreateRequest>({
                 query: ({...body}) => ({
                     url: "/products/admin/",
@@ -66,6 +72,15 @@ export const productApi = coreApi.injectEndpoints({
                     
                 }),
                 invalidatesTags: [{ type: 'User', id: 'LIST' }],
+            }),
+            updateProduct: builder.mutation<ProductModel, ProductAdminUpdateRequest>({
+                query: ({id, ...body}) => ({
+                    url: `/products/admin/${id}/`,
+                    method: "PUT",
+                    credentials: "include",
+                    body: recursiveToSnake(body),
+                }),
+                invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
             }),
             deleteProduct: builder.mutation<void, number>({
                 query: (id) => ({
@@ -89,7 +104,9 @@ export const {
 	useGetAllProductsQuery,
     useGetProductByIdQuery,
     useGetAllAdminProductsQuery,
+    useGetAdminProductByIdQuery,
     useCreateProductMutation,
+    useUpdateProductMutation,
     useDeleteProductMutation
 
 } = productApi;

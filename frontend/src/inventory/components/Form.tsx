@@ -1,11 +1,11 @@
 import { Box, Checkbox, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack } from "@chakra-ui/react";
 import FormField from "../../core/components/FormField";
-import { ProductAdminCreateError, ProductAdminCreateRequest } from "../services/types";
+import { ProductAdminCreateError, ProductAdminCreateRequest, ProductAdminUpdateRequest } from "../services/types";
 
 const ProductAdminForm = ({
   formData, setFormData, formErrors
 }: {
-  formData: ProductAdminCreateRequest
+  formData: ProductAdminUpdateRequest | ProductAdminCreateRequest
   setFormData: (...args: any) => void
   formErrors: ProductAdminCreateError
 

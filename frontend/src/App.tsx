@@ -19,6 +19,7 @@ import CheckoutPage from './cart/pages/CheckoutPage';
 import ProductDetailPage from './inventory/pages/ProductDetailPage';
 import ProductAdminListPage from './inventory/pages/ProductAdminListPage';
 import CreateProductAdminPage from './inventory/pages/CreateProductAdminPage';
+import EditProductAdminPage from './inventory/pages/EditProductAdminPage';
 
 function App() {
 
@@ -72,6 +73,13 @@ function App() {
                     path: "/products/manage/create",
                     element: authState?.user ? authState.user?.isSeller  ? <CreateProductAdminPage  />: <AccessDenied/> :<Navigate to='/login'/>,
                     
+                }, 
+                {
+                    path: "/products/manage/:id/edit",
+                    element: authState?.user ? authState.user?.isSeller  ? <EditProductAdminPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    loader: async ({ params }) => {
+                        return params.id;
+                    },
                 }, 
                 {
                     path: "/products/manage/",

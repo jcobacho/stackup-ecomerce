@@ -15,12 +15,21 @@ export type AllProductResponse = {
 };
 
 export interface ProductAdminCreateRequest {
+	// id: number;
+	name: string;
+	description: string | null;
+	price: number;
+	imageUrl: string | null;
+}
+
+export interface ProductAdminUpdateRequest {
 	id: number;
 	name: string;
 	description: string | null;
 	price: number;
 	imageUrl: string | null;
 }
+
 
 export interface ProductAdminCreateError {
 	name?: [number: string];
