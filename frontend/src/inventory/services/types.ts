@@ -14,10 +14,20 @@ export type AllProductResponse = {
     results: ProductModel[]
 };
 
-// export interface BlogCreateRequest {
-// 	title: string | null;
-// 	content: string | null;
-// }
+export interface ProductAdminCreateRequest {
+	id: number;
+	name: string;
+	description: string | null;
+	price: number;
+	imageUrl: string | null;
+}
+
+export interface ProductAdminCreateError {
+	name?: [number: string];
+	description?: [number: string];
+	price?: [number: string];
+	imageUrl?: [number: string];
+}
 
 // export interface BlogDeleteRequest {
 // 	id: number;

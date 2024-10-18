@@ -18,6 +18,7 @@ import { coreApi } from './core/services/coreSlice';
 import CheckoutPage from './cart/pages/CheckoutPage';
 import ProductDetailPage from './inventory/pages/ProductDetailPage';
 import ProductAdminListPage from './inventory/pages/ProductAdminListPage';
+import CreateProductAdminPage from './inventory/pages/CreateProductAdminPage';
 
 function App() {
 
@@ -68,8 +69,13 @@ function App() {
                     },
                 },
                 {
+                    path: "/products/manage/create",
+                    element: authState?.user ? authState.user?.isSeller  ? <CreateProductAdminPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    
+                }, 
+                {
                     path: "/products/manage/",
-                    element: authState?.user ? authState.user?.isShopper || authState.user?.isSeller  ? <ProductAdminListPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    element: authState?.user ? authState.user?.isSeller  ? <ProductAdminListPage  />: <AccessDenied/> :<Navigate to='/login'/>,
                     
                 }, 
                 {

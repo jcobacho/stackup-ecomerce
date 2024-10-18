@@ -26,7 +26,7 @@ function ProductAdminListPage() {
             <Box h={'15px'}></Box>
             <Box w={"100%"} display='flex' >
                 <Box>
-                    <Button as={ReactRouterLink} to={'/users/create'}>Create</Button>
+                    <Button as={ReactRouterLink} to={'/products/manage/create'}>Create</Button>
                 </Box>
                 <Spacer />
                 <AdminSearch search={search} setSearch={setSearch} setPage={setPage}/>

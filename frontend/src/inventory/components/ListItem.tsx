@@ -17,7 +17,7 @@ const ListItem = React.memo(function ListItem({record, setToDelete, onOpenDelete
             </Td>
             <Td>{record.name}</Td>
             <Td>{record.description}</Td>
-            <Td>{record.price}</Td>
+            <Td>$ {record.price}</Td>
             <Td>
                 <Stack direction='row' spacing={4}>
                     <Button as={ReactRouterLink}                         
