@@ -1,6 +1,6 @@
 
 from sales.models import Order
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins, filters
 from rest_framework.permissions import IsAuthenticated
 from sales.api.serializers import OrderSerializer, OrderCreateSerializer, CartSerializer, PayOrderSerializer
 from rest_framework.response import Response
@@ -8,11 +8,12 @@ from rest_framework import decorators, status
 from django.shortcuts import get_object_or_404
 
 from sales.api.permissions import IsOwner
+from api.permissions import IsShopper
 
 class CartViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = CartSerializer
-    permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated, IsOwner, IsShopper)
     pagination_class = None
     queryset = Order.objects.all()
 
@@ -57,12 +58,15 @@ class CartViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(CartSerializer(new_order).data, status=status.HTTP_200_OK)
 
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(mixins.ListModelMixin,
+                           viewsets.GenericViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated, IsOwner, IsShopper)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['shipping_info__name', 'shipping_info__address', 'shipping_info__city',
+                    'shipping_info__country', 'shipping_info__zipcode']
 
-    def get_serializer_class(self, **kwargs):
-        if self.action == 'create':
-            return OrderCreateSerializer
-        return self.serializer_class
+    def get_queryset(self):
+        return super().get_queryset().filter(client=self.request.user, paid=True)
 
