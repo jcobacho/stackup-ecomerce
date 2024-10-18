@@ -4,6 +4,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useLoaderData } from "react-router";
 import { useAddToCartMutation } from "../../cart/services/cartSlice";
 import { AddToCartRequest } from "../../cart/services/types";
+import { useAppSelector } from "../../store";
 import ProductQuantity from "../components/ProductQuantity";
 import { useGetProductByIdQuery } from "../services/productSlice";
 
@@ -14,6 +15,8 @@ function ProductDetailPage() {
     const {data:record, isFetching, error } = useGetProductByIdQuery(query ?? 0);
     const [addToCart, {isLoading}] = useAddToCartMutation()
     const [quantity, setQuantity] = useState(1)
+
+    const loggedUser = useAppSelector((state) => state.auth.user)
 
     async function HandleAddToCartClick() {
         const {data, error } = await addToCart({ id: record?.id, quantity, set_qty:false } as AddToCartRequest)
@@ -89,7 +92,7 @@ function ProductDetailPage() {
                     $250.00
                     </Text> */}
 
-                    <Box>
+                    {loggedUser?.isShopper && <Box>
                         <ButtonGroup spacing="2" mt={6}>
                             <ProductQuantity quantity={quantity} setQuantity={setQuantity} width="6rem" height="2rem"/>
                             
@@ -99,7 +102,7 @@ function ProductDetailPage() {
                                 Add to cart
                             </Button>
                         </ButtonGroup>
-                    </Box>
+                    </Box>}
                 </Stack>
             </Box>
             <Spacer/>
