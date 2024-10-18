@@ -58,7 +58,7 @@ function ProductPage() {
             </SimpleGrid>
             : !isFetching &&(
                 <Text textAlign="center" mt="1.5rem" fontWeight="bold">
-                  No Items in cart
+                  No products found
                 </Text>
               )}
 
