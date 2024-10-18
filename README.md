@@ -53,3 +53,29 @@ Lets create our super user to be able to access our app
 ```
 $ python manage.py createsuperuser
 ```
+
+Finally lets run the server
+
+```
+$ python manage.py runserver
+```
+
+the following urls become available
+
+* http://localhost:8000/api/docs
+* http://localhost:8000/admin
+
+
+## React
+--------------------
+
+For the react installation we followed the stackup tutorial
+* https://earn.stackup.dev/campaigns/advanced-state-management-with-redux-toolkit-in-react-5e5b/quests/quest-3-building-a-real-world-application-with-redux-toolkit
+
+the react code is in the frontend/ folder
+to run the server
+
+```
+$ cd frontend/
+$ npm run dev
+```
