@@ -14,6 +14,26 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'username', 'password', 'is_staff', 'is_seller', 'is_shopper']                
 
+class RegistrationSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(required=True, write_only=True)
+    password2 = serializers.CharField(required=True, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'username', 'password', 'password2', 'is_seller', 'is_shopper'] 
+        extra_kwargs = {
+            'first_name': {'required': True}
+        }
+
+    def validate(self, data):
+        """
+        Check that passwords match.
+        """
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password2":["Password don't match"]})
+        return data               
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     
