@@ -9,7 +9,13 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 function CreateUser() {
     const [createUser, {isLoading: isCreating}] = useCreateUserMutation();
 
-    const [userFormData, setUserFormData] = useState<UserCreateRequest>({});
+    const [userFormData, setUserFormData] = useState<UserCreateRequest>({
+        username: "",
+        firstName: "",
+        isShopper: false,
+        isSeller: false,
+        isStaff: false
+    });
     const [userFormErrors, setUserFormErrors] = useState({});
 
     const navigate = useNavigate();

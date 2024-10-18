@@ -1,18 +1,17 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 
-import CartItem, { AddToCartRequest, CartModel, PayOrderRequest } from './types'
-
-
-const initialCartState = {
-  orderitems: [],
-  totalQuantity: 0,
-  totalAmount: 0
-  
-}
-
+import CartItem, { AddToCartRequest, AllOrdersResponse, CartModel, OrderModel, PayOrderRequest } from './types'
 import { coreApi } from "../../core/services/coreSlice";
 import { RootState } from '../../store';
 import { recursiveToSnake } from '../../core/utils';
+import { SearchRequest } from '../../core/services/types';
+
+const initialCartState = {
+	orderitems: [],
+	totalQuantity: 0,
+	totalAmount: 0
+	
+}
 // Define our service using a base URL and expected endpoints
 export const cartApi = coreApi.injectEndpoints({
 	
@@ -21,6 +20,12 @@ export const cartApi = coreApi.injectEndpoints({
         	getMyCart: builder.query<CartModel, void>({
             	query: () => ({
                 	url: `/orders/cart/`,
+            	}),            	
+        	}),
+			getMyOrders: builder.query<AllOrdersResponse, SearchRequest>({
+            	query: (q) => ({
+                	url: `/orders/order/`,
+					params: q
             	}),            	
         	}),
 			addToCart: builder.mutation<CartModel, AddToCartRequest>({
@@ -92,4 +97,4 @@ export const totalAmount = (state: RootState): number => state.cart.totalAmount
 export const totalQuantity = (state: RootState): number =>
   state.cart.totalQuantity
 
-export const { useGetMyCartQuery, useAddToCartMutation, useEmptyCartMutation, usePayOrderMutation} = cartApi;
+export const { useGetMyCartQuery, useAddToCartMutation, useEmptyCartMutation, usePayOrderMutation, useGetMyOrdersQuery} = cartApi;

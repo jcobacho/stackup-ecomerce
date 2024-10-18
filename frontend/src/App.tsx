@@ -20,6 +20,7 @@ import ProductDetailPage from './inventory/pages/ProductDetailPage';
 import ProductAdminListPage from './inventory/pages/ProductAdminListPage';
 import CreateProductAdminPage from './inventory/pages/CreateProductAdminPage';
 import EditProductAdminPage from './inventory/pages/EditProductAdminPage';
+import OrdersPage from './cart/pages/OrdersPage';
 
 function App() {
 
@@ -108,6 +109,11 @@ function App() {
                     element: authState?.user ? authState.user?.isShopper ? <CheckoutPage  />: <AccessDenied/> :<Navigate to='/login'/>,
                     
                 },  
+                {
+                    path: "/orders",
+                    element: authState?.user ? authState.user?.isShopper ? <OrdersPage  />: <AccessDenied/> :<Navigate to='/login'/>,
+                    
+                }, 
             ],
         },
         {

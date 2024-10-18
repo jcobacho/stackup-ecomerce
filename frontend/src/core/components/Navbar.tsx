@@ -168,7 +168,7 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             <br />
             <MenuDivider />
             {authState?.user?.isStaff && <MenuItem as={ReactRouterLink} to={'/users'}>Manage Users</MenuItem>}
-            <MenuItem >My Orders</MenuItem>
+            {authState?.user?.isShopper &&<MenuItem as={ReactRouterLink} to={'/orders'}>My Orders</MenuItem>}
             {authState?.user?.isSeller && <MenuItem as={ReactRouterLink} to={'/products/manage/'}>My Products</MenuItem>}
             <MenuItem onClick={() => {store.dispatch(logout()); store.dispatch(removeCart()) }}>Logout</MenuItem>
           </MenuList>

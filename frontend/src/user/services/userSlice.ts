@@ -137,7 +137,6 @@ export const {
 	useDeleteUserMutation,
 } = userApi;
 
-export const selectAllUsers = (state) => userApi.endpoints.getAllUsers.select()(state).data
 // export const {
 // 	// selectById: selectUserById,
 // 	// selectIds: selectUserIds,

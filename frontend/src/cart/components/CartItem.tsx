@@ -6,8 +6,9 @@ import CartItemType from '../services/types'
 import { FiTrash } from 'react-icons/fi'
 import { useAddToCartMutation } from '../services/cartSlice'
 import { AddToCartRequest } from '../services/types'
+import * as React from 'react'
 
-const CartItem: React.FC<{ item: CartItemType }> = ({ item }): JSX.Element => {
+const CartItem: React.FC<{ item: CartItemType }> = React.memo(({ item }): JSX.Element => {
 
   const [addToCart, {isLoading}] = useAddToCartMutation()
 
@@ -90,6 +91,6 @@ const CartItem: React.FC<{ item: CartItemType }> = ({ item }): JSX.Element => {
       
     </HStack>
   )
-}
+})
 
 export default CartItem

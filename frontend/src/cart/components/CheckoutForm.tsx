@@ -22,7 +22,14 @@ import CheckoutSummary from './CheckoutSummary'
 
     const [payOrder, {isLoading}] = usePayOrderMutation()
 
-    const [formData, setFormData] = useState<PayOrderRequest>({});
+    const [formData, setFormData] = useState<PayOrderRequest>({
+      name: '',
+      emailAddress: "",
+      address: "",
+      zipcode: "",
+      city: "",
+      country: ""
+    });
     const [formErrors, setFormErrors] = useState({});
 
     async function HandleFormSubmit(e){
@@ -32,7 +39,7 @@ import CheckoutSummary from './CheckoutSummary'
 
         if (data){
             console.log("order paid successfully")
-            return navigate('/products')
+            navigate('/products')
 
         }
 
