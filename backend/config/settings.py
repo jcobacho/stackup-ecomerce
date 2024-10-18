@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
 
     # my apps
-    'core',
+    # 'core',
     'api',
     'authapi',
     'inventory',
