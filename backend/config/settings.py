@@ -142,13 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #AUTH
 AUTH_USER_MODEL = "authapi.User"
 
-#NINJA 
-# NINJA_PAGINATION_PER_PAGE = 1
-
-#NINJA jwt
-NINJA_JWT = {
-'TOKEN_OBTAIN_PAIR_INPUT_SCHEMA': "authapi.schema.MyTokenObtainPairInputSchema"
-}
 
 REST_FRAMEWORK = { 
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
@@ -164,7 +157,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    
+
     "TOKEN_OBTAIN_SERIALIZER": "authapi.api.serializers.MyTokenObtainPairSerializer",
 
 }
