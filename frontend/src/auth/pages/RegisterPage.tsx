@@ -13,37 +13,44 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { useState } from 'react';
-import { LoginRequest } from '../services/types';
-import { useLoginMutation } from '../services/authSlice'
+import { RegisterError, RegisterRequest } from '../services/types';
+import { useRegisterMutation } from '../services/authSlice'
 import { useNavigate } from 'react-router';
-import PasswordInput from '../../core/components/PasswordInput';
+import RegistrationForm from '../components/RegistrationForm';
 import { Link } from 'react-router-dom';
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
-  const [loginFormData, setLoginFormData] = useState<LoginRequest>({
-      username: "",
-      password: "",
+  const [formData, setFormData] = useState<RegisterRequest>({
+    username: "",
+    firstName: "",
+    isShopper: false,
+    isSeller: false,
+    password: "",
+    password2: ""
   });
-
-  const [login, { isLoading }] = useLoginMutation();
+  const [formErrors, setFormErrors] = useState<RegisterError>({});
+  const [register, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
 
   async function onSubmit(e) {
     e.preventDefault();
     try {
 
-      const { data, error} = await login(loginFormData)
+      const { data, error} = await register(formData)
       if (data){
-        return navigate('/')
+        return navigate('/login')
 
       }
       if(error){
-        alert(error.data?.detail)
+        console.log("error.data")
+        console.log(error.data)
+        // alert(error.data?.detail)
+        setFormErrors(error?.data)
       }     
       
     } catch (err) {
-        alert(`Failed to login; got ${err}`);
+        alert(`Failed to register; got ${err}`);
     }
   }
 
@@ -65,19 +72,11 @@ export default function LoginPage() {
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}>
-          <Stack as={'form'} spacing={10} onSubmit={onSubmit}>
+          <Stack as={'form'} spacing={4} onSubmit={onSubmit}>
 
-              <FormControl id="email">
-                <FormLabel>Username</FormLabel>
-                <Input type="username" value={loginFormData.username}
-                            onChange={(e) =>
-                                setLoginFormData({ ...loginFormData, username: e.target.value })
-                            }/>
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
-                <PasswordInput formData={loginFormData} setFormData={setLoginFormData}/>
-              </FormControl>
+              
+              <RegistrationForm formData={formData} setFormData={setFormData} formErrors={formErrors}/>
+
               <Stack spacing={6}>
                 
                 <Button
@@ -88,11 +87,11 @@ export default function LoginPage() {
                     bg: 'blue.500',
                   }}
                   type='submit'>
-                  Sign in
+                  Register
                 </Button>
 
                 <Box alignItems={'center'} textAlign={'center'}>
-                  <Link to={'/register'} color='teal.500'>Don't have an account yet?</Link>
+                  <Link to={'/login'} color='teal.500'>Already have an account?</Link>
                 </Box>
               </Stack>
           </Stack>

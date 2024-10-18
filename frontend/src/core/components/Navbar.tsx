@@ -127,13 +127,13 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
             Sign In
           </Button>
           <Button
-            as={'a'}
+            as={ReactRouterLink}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
             color={'white'}
             bg={'pink.400'}
-            href={'#'}
+            to={'/register'}
             _hover={{
               bg: 'pink.300',
             }}>

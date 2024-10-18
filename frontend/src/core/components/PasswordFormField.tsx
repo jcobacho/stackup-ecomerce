@@ -1,12 +1,11 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react";
+import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import PasswordInput from "./PasswordInput";
-// FormField({field, value, label, type, isRequired, placeholder, errorMessage, isInvalid, onChange})
-const FormField = ({
+
+const PasswordFormField = ({
     field,
     value,
     label,
-    type = 'text',
     isRequired = true,
     placeholder,
     errorMessage,
@@ -23,24 +22,33 @@ const FormField = ({
     isInvalid: boolean,
     onChange: (e:any) => void,
   }): JSX.Element => {
+
+    const [show, setShow] = useState(false)
+    const handleClick = () => setShow(!show)
     return ( 
 
         <FormControl isRequired={isRequired}isInvalid={isInvalid}>
             <FormLabel>{label}</FormLabel>
 
-            {type == 'textarea' &&
-                <Textarea name={field} placeholder={placeholder} onChange={onChange} 
-                value={value}></Textarea> }         
-            
-            
-            {type == 'text' &&  <Input name={field} type={type} placeholder={placeholder} onChange={onChange} 
-                            value={value}/>}
-
-            
+            <InputGroup size='md'>
+              <Input
+                name={field}
+                pr='4.5rem'
+                type={show ? 'text' : 'password'}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+              />
+              <InputRightElement width='4.5rem'>
+                <Button h='1.75rem' size='sm' onClick={handleClick} tabIndex={-1}>
+                  {show ? <FiEye/> : <FiEyeOff/>}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <FormErrorMessage>{errorMessage}</FormErrorMessage>                
             
         </FormControl>
      );
 }
 
-export default FormField;
+export default PasswordFormField;

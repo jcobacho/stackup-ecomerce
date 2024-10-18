@@ -5,10 +5,12 @@ import type {
 	LoginRequest,
 	AuthState,
 	TokenResponse,
-	RefreshRequest
+	RefreshRequest,
+	User,
+	RegisterRequest
 } from "./types";
 import { createSlice } from "@reduxjs/toolkit";
-import { toCamelResponseHandler } from "../../core/utils";
+import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
 import { coreApi } from "../../core/services/coreSlice";
 
 
@@ -20,7 +22,7 @@ export const authApi = createApi({
 	baseQuery: fetchBaseQuery({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
     	baseUrl: "http://localhost:8000/api/",
-    	credentials: "include",
+    	// credentials: "include",
 		responseHandler: toCamelResponseHandler
 	}),
 	
@@ -62,12 +64,18 @@ export const authApi = createApi({
 				}
 
 				} catch (err) {
-				  // `onError` side-effect
-				  console.log("err")
-				  console.log(err)
+				  // `onError` side-effect				  
 				}
 			  },		
         }),
+		register: builder.mutation<User, RegisterRequest>({
+			query: (body) => ({
+                url: "users/register/",
+                method: "POST",
+                body: recursiveToSnake(body),
+            }),
+
+		}),
         refresh: builder.mutation<TokenResponse, RefreshRequest>({
             query: (credentials) => ({
                 url: "token/refresh/",
@@ -148,5 +156,6 @@ export const { refreshAuthentication, refreshTokens, logout, updateAuthenticated
 // Exporting the generated methods from createApi
 export const {
 	useLoginMutation,
+	useRegisterMutation,
 	useRefreshMutation
 } = authApi;

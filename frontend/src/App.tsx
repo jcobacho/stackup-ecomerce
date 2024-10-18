@@ -21,6 +21,7 @@ import ProductAdminListPage from './inventory/pages/ProductAdminListPage';
 import CreateProductAdminPage from './inventory/pages/CreateProductAdminPage';
 import EditProductAdminPage from './inventory/pages/EditProductAdminPage';
 import OrdersPage from './cart/pages/OrdersPage';
+import RegisterPage from './auth/pages/RegisterPage';
 
 function App() {
 
@@ -48,6 +49,11 @@ function App() {
         {
             path: "/login",
             element: <LoginPage/>
+                
+        },
+        {
+            path: "/register",
+            element: <RegisterPage/>
                 
         },
         {
