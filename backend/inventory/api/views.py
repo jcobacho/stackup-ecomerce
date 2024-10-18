@@ -67,7 +67,11 @@ class AdminProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsSeller]
     search_fields = ['name']
 
-    def get_queryset(self):
-        
+    def get_queryset(self):        
         return super().get_queryset().filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        # update serializer validated data with logged user
+        serializer.validated_data['owner'] = self.request.user
+        return super().perform_create(serializer)
         
