@@ -64,8 +64,7 @@ export default function LoginPage() {
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}>
-          <Stack spacing={10}>
-            <form onSubmit={onSubmit}>
+          <Stack as={'form'} spacing={10} onSubmit={onSubmit}>
 
               <FormControl id="email">
                 <FormLabel>Username</FormLabel>
@@ -79,13 +78,7 @@ export default function LoginPage() {
                 <PasswordInput formData={loginFormData} setFormData={setLoginFormData}/>
               </FormControl>
               <Stack spacing={10}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}>
-                  <Checkbox>Remember me</Checkbox>
-                  <Text color={'blue.400'}>Forgot password?</Text>
-                </Stack>
+                
                 <Button
                   bg={'blue.400'}
                   color={'white'}
@@ -97,7 +90,6 @@ export default function LoginPage() {
                   Sign in
                 </Button>
               </Stack>
-            </form>
           </Stack>
         </Box>
       </Stack>
