@@ -95,9 +95,12 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
           </Flex>
         </Flex>
 
-        {isAuthenticated && authState.user.isShopper &&
-        <Flex flex={{ base: 1 }}>
-            <Button onClick={openDrawer}>
+        {/* {isAuthenticated && authState.user.isShopper &&
+        <Flex flex={{ base: 1, md: 0}
+        }>
+            <Button onClick={openDrawer} justify={'flex-end'}
+          direction={'row'}
+          spacing={6}>
                 <FiShoppingCart/>
                 <Center
                   as="span"
@@ -116,63 +119,93 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
                   {total}
                 </Center>
             </Button>
-        </Flex>}
+        </Flex>} */}
 
-        {!isAuthenticated?<Stack
+        {/* {!isAuthenticated? */}
+        
+        <Stack
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button as={ReactRouterLink} fontSize={'sm'} fontWeight={400} variant={'link'} to={'/login'}>
-            Sign In
-          </Button>
-          <Button
-            as={ReactRouterLink}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            to={'/register'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
-            Sign Up
-          </Button>
-        </Stack>:
-        
-        <Menu>
-          <MenuButton
-            as={Button}
-            rounded={'full'}
-            variant={'link'}
-            cursor={'pointer'}
-            minW={0}>
-            <Avatar
-              size={'sm'}
-              src={'https://avatars.dicebear.com/api/male/username.svg'}
-            />
-          </MenuButton>
-          <MenuList alignItems={'center'}>
-            <br />
-            <Center>
+
+
+            {isAuthenticated && authState.user.isShopper &&
+            <Button onClick={openDrawer} bg={'transparent'} borderRadius={'32'} _hover={{'bg': 'gray.100'}}>
+                <FiShoppingCart/>
+                <Center
+                  as="span"
+                  p=".6rem"
+                  position="absolute"
+                  width="1rem"
+                  height="1rem"
+                  bg="accent"
+                  fontSize="0.8125rem"
+                  borderRadius="50%"
+                  color="white"
+                  top="-0.375rem"
+                  right="-0.75rem"
+                  bgColor={'black'}
+                >
+                  {total}
+                </Center>
+            </Button>}
+
+          {!isAuthenticated?
+
+            <>
+              <Button as={ReactRouterLink} fontSize={'sm'} fontWeight={400} variant={'link'} to={'/login'}>
+                Sign In
+              </Button>
+              <Button
+                as={ReactRouterLink}
+                display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                fontWeight={600}
+                color={'white'}
+                bg={'pink.400'}
+                to={'/register'}
+                _hover={{
+                  bg: 'pink.300',
+                }}>
+                Sign Up
+              </Button>
+            </>:
+            <Menu>
+            <MenuButton
+              as={Button}
+              rounded={'full'}
+              variant={'link'}
+              cursor={'pointer'}
+              minW={0}>
               <Avatar
-                size={'2xl'}
+                size={'sm'}
                 src={'https://avatars.dicebear.com/api/male/username.svg'}
               />
-            </Center>
-            <br />
-            <Center>
-              <p>{authState?.user?.username}</p>
-            </Center>
-            <br />
-            <MenuDivider />
-            {authState?.user?.isStaff && <MenuItem as={ReactRouterLink} to={'/users'}>Manage Users</MenuItem>}
-            {authState?.user?.isShopper &&<MenuItem as={ReactRouterLink} to={'/orders'}>My Orders</MenuItem>}
-            {authState?.user?.isSeller && <MenuItem as={ReactRouterLink} to={'/products/manage/'}>My Products</MenuItem>}
-            <MenuItem onClick={() => {store.dispatch(logout()); store.dispatch(removeCart()) }}>Logout</MenuItem>
-          </MenuList>
-        </Menu>}
+            </MenuButton>
+            <MenuList alignItems={'center'}>
+              <br />
+              <Center>
+                <Avatar
+                  size={'2xl'}
+                  src={'https://avatars.dicebear.com/api/male/username.svg'}
+                />
+              </Center>
+              <br />
+              <Center>
+                <p>{authState?.user?.username}</p>
+              </Center>
+              <br />
+              <MenuDivider />
+              {authState?.user?.isStaff && <MenuItem as={ReactRouterLink} to={'/users'}>Manage Users</MenuItem>}
+              {authState?.user?.isShopper &&<MenuItem as={ReactRouterLink} to={'/orders'}>My Orders</MenuItem>}
+              {authState?.user?.isSeller && <MenuItem as={ReactRouterLink} to={'/products/manage/'}>My Products</MenuItem>}
+              <MenuItem onClick={() => {store.dispatch(logout()); store.dispatch(removeCart()) }}>Logout</MenuItem>
+            </MenuList>
+          </Menu>
+            
+          }
+        </Stack>        
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
