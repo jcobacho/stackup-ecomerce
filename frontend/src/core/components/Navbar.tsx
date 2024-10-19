@@ -180,16 +180,16 @@ export default function WithSubnavigation({openDrawer, isAuthenticated, authStat
               minW={0}>
               <Avatar
                 size={'sm'}
-                src={'https://avatars.dicebear.com/api/male/username.svg'}
-              />
+                src={`https://api.dicebear.com/9.x/initials/svg?seed=${authState.user?.username}`}
+                />
             </MenuButton>
             <MenuList alignItems={'center'}>
               <br />
               <Center>
                 <Avatar
                   size={'2xl'}
-                  src={'https://avatars.dicebear.com/api/male/username.svg'}
-                />
+                  src={`https://api.dicebear.com/9.x/initials/svg?seed=${authState.user?.username}`}
+                  />
               </Center>
               <br />
               <Center>
@@ -370,15 +370,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  // {
-  //   label: 'Home',
-  //   href: '/',
-    
-  // },
+  
   {
     label: 'Products',
     href: '/products',
-    // perms: ['isShopper', 'isSeller']
 
   },
   {
@@ -387,27 +382,5 @@ const NAV_ITEMS: Array<NavItem> = [
     perms: ['isStaff']
 
   },
-//   {
-//     label: 'Find Work',
-//     children: [
-//       {
-//         label: 'Job Board',
-//         subLabel: 'Find your dream design job',
-//         href: '#',
-//       },
-//       {
-//         label: 'Freelance Projects',
-//         subLabel: 'An exclusive list for contract work',
-//         href: '#',
-//       },
-//     ],
-//   },
-//   {
-//     label: 'Learn Design',
-//     href: '#',
-//   },
-//   {
-//     label: 'Hire Designers',
-//     href: '#',
-//   },
+
 ]
