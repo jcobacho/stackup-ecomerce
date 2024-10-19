@@ -11,6 +11,7 @@ import {
   Button,
   Text,
   useColorModeValue,
+  LinkOverlay,
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import { RegisterError, RegisterRequest } from '../services/types';
@@ -67,6 +68,9 @@ export default function RegisterPage() {
             to enjoy all of our cool <Text color={'blue.400'}>features</Text> ✌️
           </Text>
         </Stack> */}
+
+        <Link to={-1 as any}> Go Back</Link>
+
         <Box
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
