@@ -62,16 +62,14 @@ function ProductDetailPage() {
 
             >
                 <Stack mt="6" spacing="3">
-                    <Text color={'darkorange'} fontWeight={600} mb={1}>
+                    {/* <Text color={'darkorange'} fontWeight={600} mb={1}>
                     SNEAKER COMPANY
-                    </Text>
+                    </Text> */}
                     <Heading size="2xl" fontWeight={'600'} mb={4}>
                     {record?.name}
                     </Heading>
                     <Text color={'#aeafb3'}>
-                    These low-profile sneakers are your perfect casual wear companion.
-                    Featuring a durable rubber outer sole, they’ll withstand
-                    everything the weather can offer.
+                    {record?.description}
                     </Text>
                     <ButtonGroup spacing="4">
                     <Text fontWeight={'600'} fontSize="2xl" display={'flex'}>
@@ -85,7 +83,6 @@ function ProductDetailPage() {
                         bg={'ghostwhite'}
                         color={'yellowgreen'}
                     >
-                        50%
                     </Button> */}
                     </ButtonGroup>
                     {/* <Text as="s" color={'#aeafb3'} mt={'-4'}>
