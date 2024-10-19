@@ -31,6 +31,7 @@ function EditUser() {
         id: query ?? 0,
         username: record?.username ?? '',
         firstName: record?.firstName ?? '',
+        password: '',
         isStaff: record?.isStaff ?? false,
         isSeller: record?.isSeller ?? false,
         isShopper: record?.isShopper ?? false,

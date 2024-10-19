@@ -12,6 +12,7 @@ function CreateUser() {
     const [userFormData, setUserFormData] = useState<UserCreateRequest>({
         username: "",
         firstName: "",
+        password: "",
         isShopper: false,
         isSeller: false,
         isStaff: false
