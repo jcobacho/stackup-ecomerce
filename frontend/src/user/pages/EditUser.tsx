@@ -54,8 +54,14 @@ function EditUser() {
 
         try {
 
+            let form = {...userFormData, id: record.id}
+
+            if (userFormData?.password === ''){
+                delete form['password']
+            }
+
             
-            const { data, error } = await updateUser({...userFormData, id: record.id})            
+            const { data, error } = await updateUser(form)            
 
             if (data){
               if (data.id === authState?.user?.id){
@@ -88,7 +94,7 @@ function EditUser() {
 
                     <VStack spacing={5}>
 
-                        <UserForm userFormData={userFormData} setUserFormData={setUserFormData} userFormErrors={userFormErrors} />
+                        <UserForm userFormData={userFormData} setUserFormData={setUserFormData} userFormErrors={userFormErrors} isCreating={false}/>
                         <Flex>
 
                             <Spacer/>

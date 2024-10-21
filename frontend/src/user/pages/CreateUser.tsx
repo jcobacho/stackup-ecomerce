@@ -58,7 +58,7 @@ function CreateUser() {
 
                     <VStack spacing={5}>
 
-                        <UserForm userFormData={userFormData} setUserFormData={setUserFormData} userFormErrors={userFormErrors} />
+                        <UserForm userFormData={userFormData} setUserFormData={setUserFormData} userFormErrors={userFormErrors} isCreating={true}/>
                         <Flex>
 
                             <Spacer/>

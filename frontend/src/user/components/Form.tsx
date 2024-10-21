@@ -1,12 +1,12 @@
 import { Box, Checkbox, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack } from "@chakra-ui/react";
 import PasswordFormField from "../../core/components/PasswordFormField";
 
-function UserForm({userFormData, setUserFormData, userFormErrors}) {
+function UserForm({userFormData, setUserFormData, userFormErrors, isCreating}) {
 
     return ( 
 
         <>
-            <FormControl isInvalid={Object.keys(userFormErrors).length > 0 ? true : false }>
+            <FormControl isRequired={true} isInvalid={Object.keys(userFormErrors).length > 0 ? true : false }>
               <FormLabel>Username</FormLabel>
               <Input name="username" placeholder='Username' onChange={(e) =>
                                 setUserFormData({ ...userFormData, username: e.target.value })} 
@@ -31,6 +31,7 @@ function UserForm({userFormData, setUserFormData, userFormErrors}) {
                 field="password" 
                 value={userFormData?.password} 
                 label="Password" 
+                isRequired={isCreating}
                 placeholder={''} 
                 errorMessage={userFormErrors?.password? userFormErrors?.password[0] : ''}
                 isInvalid={userFormErrors?.password ? true : false } 
