@@ -39,4 +39,6 @@ const toCamelResponseHandler = async (res: Response) => {
 }
 
 
-  export {recursiveToSnake, recursiveToCamel, toCamelResponseHandler};
+const serverUrl = 'http://localhost:8000'
+
+  export {recursiveToSnake, recursiveToCamel, toCamelResponseHandler, serverUrl};

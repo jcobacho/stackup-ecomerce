@@ -7,9 +7,10 @@ import type {
 import { refreshTokens, logout } from '../../auth/services/authSlice'
 import { RootState } from '../../store'
 import { toCamelResponseHandler } from '../utils'
+import { serverUrl } from '../utils'
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api",
+    baseUrl: `${serverUrl}/api/`,
     prepareHeaders: (headers, { getState, endpoint }) => {
         const token = (getState() as RootState).auth.access;
         if (

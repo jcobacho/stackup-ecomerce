@@ -12,7 +12,7 @@ import type {
 import { createSlice } from "@reduxjs/toolkit";
 import { recursiveToSnake, toCamelResponseHandler } from "../../core/utils";
 import { coreApi } from "../../core/services/coreSlice";
-
+import { serverUrl } from "../../core/utils";
 
 // Define our service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -21,7 +21,7 @@ export const authApi = createApi({
 	// environment
 	baseQuery: fetchBaseQuery({
     	// Replace your address here if needed i.e. your forwarded address from a cloud environment
-    	baseUrl: "http://localhost:8000/api/",
+    	baseUrl: `${serverUrl}/api/`,
     	// credentials: "include",
 		responseHandler: toCamelResponseHandler
 	}),
