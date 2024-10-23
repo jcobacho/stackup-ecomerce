@@ -33,9 +33,11 @@ const FormField = ({
                 value={value}></Textarea> }         
             
             
-            {type == 'text' || type == 'number' &&  <Input name={field} type={type} placeholder={placeholder} onChange={onChange} 
+            {type == 'text' &&  <Input name={field} type={type} placeholder={placeholder} onChange={onChange} 
                             value={value}/>}
 
+            {type == 'number' && <Input name={field} type={type} placeholder={placeholder} onChange={onChange} 
+                            value={value}/>}
             
             <FormErrorMessage>{errorMessage}</FormErrorMessage>                
             
