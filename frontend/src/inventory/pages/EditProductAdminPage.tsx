@@ -38,7 +38,8 @@ function EditProductAdminPage() {
         return <NotFound/>
     } 
 
-    async function HandleFormSubmit(){
+    async function HandleFormSubmit(e){
+        e.preventDefault()
 
         try {
             

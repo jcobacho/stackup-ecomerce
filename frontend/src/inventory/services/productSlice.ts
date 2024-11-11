@@ -71,7 +71,7 @@ export const productApi = coreApi.injectEndpoints({
                     body: recursiveToSnake(body),
                     
                 }),
-                invalidatesTags: [{ type: 'User', id: 'LIST' }],
+                invalidatesTags: [{ type: 'ProductAdmin', id: 'LIST' }],
             }),
             updateProduct: builder.mutation<ProductModel, ProductAdminUpdateRequest>({
                 query: ({id, ...body}) => ({
@@ -80,7 +80,7 @@ export const productApi = coreApi.injectEndpoints({
                     credentials: "include",
                     body: recursiveToSnake(body),
                 }),
-                invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg.id }],
+                invalidatesTags: (result, error, arg) => [{ type: 'ProductAdmin', id: arg.id }],
             }),
             deleteProduct: builder.mutation<void, number>({
                 query: (id) => ({
